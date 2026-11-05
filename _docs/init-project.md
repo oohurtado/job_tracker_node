@@ -111,9 +111,8 @@ Prisma
               > npx prisma migrate status
   
   prisma migrate dev: crea y aplica migraciones durante el desarrollo.
-  > npx prisma migrate dev --name init --create-only
   
-  > npx prisma migrate dev --name add_product_sku
+  > npx prisma migrate dev --name init
   > npx prisma generate
 
     **agregar a app.ts**

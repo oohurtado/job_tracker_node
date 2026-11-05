@@ -4,11 +4,98 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
   importFileExtension = "ts"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+/**
+ * Tipo de Prisma	        Uso habitual	                                Ejemplo
+ * Int	                    Números enteros e identificadores	            edad Int
+ * String	                Nombres, correos y textos	                    nombre String
+ * Boolean	                Valores verdadero o falso	                    activo Boolean
+ * Float	                Números decimales de punto flotante	            temperatura Float
+ * DateTime	            Fechas y horas	                                creadoEn DateTime
+ * BigInt	                Números enteros de gran tamaño	                poblacion BigInt
+ * Decimal	                Números decimales de precisión fija	            precio Decimal
+ * Json	                Datos estructurados en formato JSON	            configuracion Json
+ * Bytes	                Datos binarios, como contenido de archivos	    archivo Bytes
+ * @map	email String @map("correo_electronico")
+ * @@map	@@map("usuarios")
+ * @@index	@@index([apellido, pais])
+ * @id	id Int @id @default(autoincrement())
+ * @@id	@@id([idUsuario, idRol])
+ * @unique	email String @unique
+ * @@unique	@@unique([nombre, apellido])
+ */
+
+model User {
+  id                              Int @id @default(autoincrement())
+
+  email                           String @unique
+  password                        String
+  first_name                      String @db.VarChar(50)
+  last_name                       String @db.VarChar(50)
+  created_at                      DateTime @default(now())
+
+  personal_information PersonalInformation?
+  jobs                            Job[]
+}
+
+model PersonalInformation {
+  id                              Int @id @default(autoincrement())
+
+  birth_date                      DateTime  @db.Date
+  birth_state                     String? @db.VarChar(50)
+  birth_country                   String? @db.VarChar(50)
+  updated_at                      DateTime @updatedAt
+
+  user_id                         Int @unique
+  user                            User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Job {
+  id Int @id @default(autoincrement())
+
+  company_name                    String @db.VarChar(100)
+  position_name                   String? @db.VarChar(100)
+  work_model                      String? @db.VarChar(10)
+  source_detail                   String?
+  source_type                     String? @db.VarChar(50)
+  notes                           String?
+  salary_min                      Decimal? @db.Decimal(12, 2)
+  salary_max                      Decimal? @db.Decimal(12, 2)
+  salary_currency                 String? @db.VarChar(10)
+  salary_period                   String? @db.VarChar(10)
+
+  user_id                         Int
+  user                            User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  job_events                      JobEvent[]
+}
+
+model JobEvent {
+  id                              Int @id @default(autoincrement())
+
+  status                          String @db.VarChar(25)
+  notes                           String? @db.VarChar(250)
+  event_at                        DateTime?
+
+  job_id                          Int
+  job                             Job @relation(fields: [job_id], references: [id], onDelete: Cascade)
+  interview_questions             InterviewQuestion[]
+}
+
+model InterviewQuestion {
+  id                              Int @id @default(autoincrement())
+
+  question                        String @db.VarChar(100)
+  answer                          String? @db.VarChar(250)
+  notes                           String? @db.VarChar(250)
+
+  job_event_id                    Int
+  job_event                       JobEvent @relation(fields: [job_event_id], references: [id], onDelete: Cascade)
 }
