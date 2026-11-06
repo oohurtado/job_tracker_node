@@ -12,7 +12,8 @@ export class UserEntity {
         public readonly password: string,
         public readonly firstName: string,
         public readonly lastName: string,
-        public readonly createdAt: Date
+        public readonly createdAt: Date,
+        public readonly passwordResetCode: string | null
     ) { }
 
 }

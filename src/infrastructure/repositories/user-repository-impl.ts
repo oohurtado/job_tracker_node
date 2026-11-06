@@ -1,0 +1,129 @@
+import { prisma } from "../../_lib/prisma";
+import { UserEntity } from "../../domain/models/entities/user-entity";
+import { UserReadModel } from "../../domain/models/read-models/user-read-model";
+import { UserRepository } from "../../domain/repositories/user-repository";
+
+export class UserRepositoryImpl implements UserRepository {
+    
+    async register(email: string, password: string, firstName: string, lastName: string) : Promise<UserEntity> {
+        let result = await prisma.user.create({
+            data: {
+                email: email,
+                password: password,
+                first_name: firstName,
+                last_name: lastName,                
+            }
+        });
+
+        return new UserEntity(
+            result.id, 
+            result.email,          
+            result.password,   
+            result.first_name, 
+            result.last_name, 
+            result.created_at,
+            result.password_reset_code);
+    };
+        
+    async getByEmail(email: string) : Promise<UserEntity | null> {
+        let result = await prisma.user.findUnique({
+            where: { email: email },
+            select: {
+                id: true,
+                password: true,
+                email: true,
+                first_name: true,
+                last_name: true,
+                created_at: true,
+                password_reset_code: true
+            }
+        })
+
+        if (result === null) {
+            throw new Error("No se encontró el correo electrónico");
+        }
+
+        return new UserEntity(
+            result.id, 
+            result.email,          
+            result.password,   
+            result.first_name, 
+            result.last_name, 
+            result.created_at,
+            result.password_reset_code);
+    }
+
+    async getPaginated (pageNumber: number, pageSize: number, sortBy: string, sortOrder: string) : Promise<UserEntity[]> {
+        const skipRows = (pageNumber - 1) * pageSize;
+        
+        const users = await prisma.user.findMany({
+            skip: skipRows,
+            take: pageSize,
+            orderBy: {                
+                [sortBy]: sortOrder
+            }
+        });
+
+        return users.map(u =>
+            new UserEntity(
+                u.id,
+                u.email,
+                u.password,
+                u.first_name,
+                u.last_name,
+                u.created_at,
+                u.password_reset_code)
+        );
+    };
+
+    async changePassword (userId: number, newPassword: string) : Promise<void> {
+        await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                password: newPassword
+            }
+        })        
+    };
+
+    async forgotPasswordStep1 (email: string, code: string) : Promise<UserReadModel> {
+            let result  =await prisma.user.update({
+            data: {
+                password_reset_code: code
+            },
+            where: {
+                email: email
+            },
+            select: {
+                id: true,
+                email: true,
+                first_name: true,
+                last_name: true
+            }
+        })
+
+        if (result === null) {
+            throw new Error("No se encontró el correo electrónico");
+        }        
+
+        return new UserReadModel(
+            result.id,
+            result.email,
+            `${result.first_name} ${result.last_name}`,            
+        )
+    };
+
+    async forgotPasswordStep2 (email: string, code: string, newPassword: string) : Promise<void> {
+        await prisma.user.update({
+            where: {
+                email: email,
+                password_reset_code: code
+            },
+            data: {
+                password_reset_code: newPassword
+            },
+        })
+    };
+
+}
