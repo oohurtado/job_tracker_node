@@ -81,7 +81,7 @@ CASOS DE USO
 users
 * register (PUBLIC) *
 * log-in (PUBLIC) *
-* get-paginated (role:ADMIN)
+* get-paginated (role:ADMIN) *1/2
 * change-password (role:USER)
 * forgot-password-step-1 (envia correo con codigo) (PUBLIC)
 * forgot-password-step-2 (aplica codigo y cambia contraseña) (PUBLIC)

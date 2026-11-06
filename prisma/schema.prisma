@@ -45,6 +45,7 @@ model User {
 
   personal_information PersonalInformation?
   jobs                            Job[]
+  roles                           Role[]
 }
 
 model PersonalInformation {
@@ -99,4 +100,14 @@ model InterviewQuestion {
 
   job_event_id                    Int
   job_event                       JobEvent @relation(fields: [job_event_id], references: [id], onDelete: Cascade)
+}
+
+model Role {
+  id                    Int @id @default(autoincrement())
+  name                  String @db.VarChar(50)
+
+  user_id Int
+  user                  User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, name])  
 }

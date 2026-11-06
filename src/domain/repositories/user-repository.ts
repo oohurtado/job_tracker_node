@@ -15,21 +15,21 @@ import { UserReadModel } from "../models/read-models/user-read-model";
 export interface UserRepository {
 
     // register a new user and return a token
-    register: (email: string, password: string, firstName: string, lastName: string) => Promise<UserEntity>;
+    register(email: string, password: string, firstName: string, lastName: string) : Promise<UserEntity>;
 
     // get credentials
-    getByEmail: (email: string) => Promise<UserEntity | null>;
+    getByEmail(email: string) : Promise<UserEntity | null>;
 
     // get a paginated list of users
-    getPaginated: (pageNumber: number, pageSize: number, sortBy: string, sortOrder: string) => Promise<UserEntity[]>;
+    getPaginated(pageNumber: number, pageSize: number, sortBy: string, sortOrder: string) : Promise<UserEntity[]>;
 
     // change the password of a user
-    changePassword: (userId: number, newPassword: string) => Promise<void>;
+    changePassword(userId: number, newPassword: string) : Promise<void>;
 
     // forgot password step 1: get info to send email and save code
-    forgotPasswordStep1: (email: string, code: string) => Promise<UserReadModel>;
+    forgotPasswordStep1(email: string, code: string) : Promise<UserReadModel>;
 
     // forgot password step 2: apply the code and change the password
-    forgotPasswordStep2: (email: string, code: string, newPassword: string) => Promise<void>;
+    forgotPasswordStep2(email: string, code: string, newPassword: string) : Promise<void>;
 
 }

@@ -1,3 +1,4 @@
+/*
 import type { Request, Response, NextFunction } from "express";
 import type { RoleRepository } from "../../domain/repositories/role-repository";
 
@@ -34,3 +35,4 @@ export function authorizeMiddleware(
         }
     };
 }
+*/
