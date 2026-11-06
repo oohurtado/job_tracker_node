@@ -10,13 +10,14 @@ import { UserRepositoryImpl } from "./infrastructure/repositories/user-repositor
 import { PasswordServiceImpl } from "./infrastructure/services/password-service-impl";
 import { TokenServiceImpl } from "./infrastructure/services/token-service-impl";
 import { UserController } from "./presentation/controllers/user-controller";
+import { authorizeMiddleware } from "./presentation/middlewares/authorize-middleware";
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
 const roleRepository: RoleRepository = new RoleRepositoryImpl()
 
 // servicios
-const tokenService: TokenService = new TokenServiceImpl()
+export const tokenService: TokenService = new TokenServiceImpl()
 const passwordService: PasswordService = new PasswordServiceImpl()
 
 // casos de uso : usuarios
@@ -30,3 +31,5 @@ export const userController: UserController = new UserController(
     authenticateUserUseCase,
     getPaginatedUserUseCase
 )
+
+export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);

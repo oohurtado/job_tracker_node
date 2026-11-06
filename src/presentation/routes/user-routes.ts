@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { userController } from "../../container";
+import { authorize, tokenService, userController } from "../../container";
+import { authenticateJwt } from "../middlewares/authenticate-jwt";
 
 const router = Router();
 
@@ -11,7 +12,7 @@ router.post("/users/authenticate", (req, res, next) => {
     void userController.authenticate(req, res, next);
 });
 
-router.get("/users", (req, res, next) => {
+router.get("/users", authenticateJwt(tokenService), authorize("admin"), (req, res, next) => {
     void userController.getPaginated(req, res, next);
 });
 
