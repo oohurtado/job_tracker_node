@@ -1,4 +1,6 @@
-import { RegisterUserUseCase } from "./application/use-cases/user/register-use-case";
+import { AuthenticateUserUseCase } from "./application/use-cases/user/authenticate-user-use-case";
+import { GetPaginatedUserUseCase } from "./application/use-cases/user/get-paginated-user-use-case";
+import { RegisterUserUseCase } from "./application/use-cases/user/register-user-use-case";
 import { UserRepository } from "./domain/repositories/user-repository";
 import { PasswordService } from "./domain/services/password-service";
 import { TokenService } from "./domain/services/token-service";
@@ -16,8 +18,12 @@ const passwordService: PasswordService = new PasswordServiceImpl()
 
 // casos de uso : usuarios
 const registerUserUseCase: RegisterUserUseCase = new RegisterUserUseCase(userRepository, passwordService, tokenService)
+const authenticateUserUseCase: AuthenticateUserUseCase = new AuthenticateUserUseCase(userRepository, passwordService, tokenService)
+const getPaginatedUserUseCase: GetPaginatedUserUseCase = new GetPaginatedUserUseCase(userRepository)
 
 // controllers
 export const userController: UserController = new UserController(
-    registerUserUseCase
+    registerUserUseCase,
+    authenticateUserUseCase,
+    getPaginatedUserUseCase
 )

@@ -3,12 +3,12 @@ import { UserRepository } from "../../../domain/repositories/user-repository"
 import { PasswordService } from "../../../domain/services/password-service"
 import { TokenService } from "../../../domain/services/token-service"
 
-interface AuthenticateInput {
+interface AuthenticateUserInput {
     email: string
     password: string
 }
 
-export class AuthenticateUseCase {
+export class AuthenticateUserUseCase {
 
     constructor(
         private readonly userRepository: UserRepository,
@@ -17,14 +17,14 @@ export class AuthenticateUseCase {
     ) {
     }
 
-    async execute(input: AuthenticateInput) : Promise<TokenReadModel | null> {
+    async execute(input: AuthenticateUserInput) : Promise<TokenReadModel | null> {
         let result = await this.userRepository.getByEmail(input.email)
         
         if (!result) {
             return null;
         }
 
-        const isValid = await this.passwordService.compare(input.password, result.password);
+        const isValid = await this.passwordService.compare(input.password, result.password ?? "");
 
         if (!isValid) {
             return null;

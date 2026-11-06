@@ -9,7 +9,7 @@ export class UserEntity {
     constructor(
         public readonly id: number,
         public readonly email: string,
-        public readonly password: string,
+        public readonly password: string | null,
         public readonly firstName: string,
         public readonly lastName: string,
         public readonly createdAt: Date,

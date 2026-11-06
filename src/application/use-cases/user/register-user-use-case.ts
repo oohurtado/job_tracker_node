@@ -6,7 +6,7 @@ import { TokenService } from "../../../domain/services/token-service";
 
 //user: {  }
 
-interface RegisterInput {
+interface RegisterUserInput {
     email: string; 
     password: string; 
     firstName: string; 
@@ -21,7 +21,7 @@ export class RegisterUserUseCase {
         private readonly tokenService: TokenService
     ) { }
 
-    async execute(input: RegisterInput) : Promise<TokenReadModel> {
+    async execute(input: RegisterUserInput) : Promise<TokenReadModel> {
         let passwordHashed = await this.passwordService.hash(input.password)
         let result = await this.userRepository.register(input.email, passwordHashed, input.firstName, input.lastName)
 
