@@ -20,4 +20,12 @@ router.put("/users/password", authenticateJwt(tokenService), (req, res, next) =>
     void userController.changePassword(req, res, next);
 });
 
+router.put("/users/forgot-password-1", (req, res, next) => {
+    void userController.forgotPasswordStep1(req, res, next);
+});
+
+router.put("/users/forgot-password-2", (req, res, next) => {
+    void userController.forgotPasswordStep2(req, res, next);
+});
+
 export default router;

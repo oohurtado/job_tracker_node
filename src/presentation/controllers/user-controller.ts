@@ -8,6 +8,10 @@ import { GetPaginatedUserUseCase } from "../../application/use-cases/user/get-pa
 import { changePasswordSchema } from "../validators/user/change-password-validator";
 import { ChangePasswordUseCase } from "../../application/use-cases/user/change-password-use-case";
 import { idSchema } from "../validators/id-schema";
+import { ForgotPasswordStep1UseCase } from "../../application/use-cases/user/forgot-password-step-1-use-case";
+import { ForgotPasswordStep2UseCase } from "../../application/use-cases/user/forgot-password-step-2-use-case";
+import { forgotPassword1Schema } from "../validators/user/forgot-password-1-validator";
+import { forgotPassword2Schema } from "../validators/user/forgot-password-2-validator";
 
 export class UserController {
 
@@ -15,7 +19,9 @@ export class UserController {
         private readonly registerUseCase: RegisterUserUseCase,
         private readonly authenticateUseCase: AuthenticateUserUseCase,
         private readonly getPaginatedUseCase: GetPaginatedUserUseCase,
-        private readonly changePasswordUseCase: ChangePasswordUseCase
+        private readonly changePasswordUseCase: ChangePasswordUseCase,
+        private readonly forgotPasswordStep1UseCase: ForgotPasswordStep1UseCase,
+        private readonly forgotPasswordStep2UseCase: ForgotPasswordStep2UseCase
     ) {}
 
     async register(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -78,7 +84,7 @@ export class UserController {
         try {
             const body = changePasswordSchema.parse(req.body);
             let userId = idSchema.parse(req.user!.id);
-            
+
             const result = await this.changePasswordUseCase.execute({
                 userId,
                 oldPassword: body.oldPassword,
@@ -90,4 +96,36 @@ export class UserController {
             next(error);
         }
     }    
+
+    async forgotPasswordStep1(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        try {
+            let body = forgotPassword1Schema.parse(req.body);
+
+            await this.forgotPasswordStep1UseCase.execute({
+                email: body.email
+            });
+
+            res.status(200).json({ message: "Se ha enviado un correo electrónico con el código de restablecimiento de contraseña" });
+        } catch (error) {
+            next(error);
+        }
+    } 
+    
+    async forgotPasswordStep2(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        try {            
+            let body = forgotPassword2Schema.parse(req.body);
+
+            let result = await this.forgotPasswordStep2UseCase.execute({
+                email: body.email,
+                code: body.code,
+                newPassword: body.newPassword                
+            });
+
+            res.status(200).json({ message: `${result ?  "Contraseña cambiada exitosamente" : "Error al cambiar la contraseña"}` });
+        } catch (error) {
+            next(error);
+        }
+    }       
 }

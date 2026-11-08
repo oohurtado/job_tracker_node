@@ -17,6 +17,8 @@ import { PasswordServiceImpl } from "./infrastructure/services/password-service-
 import { TokenServiceImpl } from "./infrastructure/services/token-service-impl";
 import { UserController } from "./presentation/controllers/user-controller";
 import { authorizeMiddleware } from "./presentation/middlewares/authorize-middleware";
+import { ForgotPasswordStep1UseCase } from './application/use-cases/user/forgot-password-step-1-use-case';
+import { ForgotPasswordStep2UseCase } from './application/use-cases/user/forgot-password-step-2-use-case';
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
@@ -25,24 +27,6 @@ const roleRepository: RoleRepository = new RoleRepositoryImpl()
 // servicios
 export const tokenService: TokenService = new TokenServiceImpl()
 const passwordService: PasswordService = new PasswordServiceImpl()
-
-// casos de uso : usuarios
-const registerUserUseCase: RegisterUserUseCase = new RegisterUserUseCase(userRepository, roleRepository, passwordService, tokenService)
-const authenticateUserUseCase: AuthenticateUserUseCase = new AuthenticateUserUseCase(userRepository, passwordService, tokenService)
-const getPaginatedUserUseCase: GetPaginatedUserUseCase = new GetPaginatedUserUseCase(userRepository)
-const changePasswordUseCase: ChangePasswordUseCase = new ChangePasswordUseCase(userRepository, passwordService)
-
-// controllers
-export const userController: UserController = new UserController(
-    registerUserUseCase,
-    authenticateUserUseCase,
-    getPaginatedUserUseCase,
-    changePasswordUseCase
-)
-
-export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);
-
-// EMAIL SERVICE
 const mailTransporter = nodemailer.createTransport({
     host: env.MAIL_HOST,
     port: env.MAIL_PORT,
@@ -54,3 +38,24 @@ const mailTransporter = nodemailer.createTransport({
     }
 });
 export const emailService = new MailtrapService(mailTransporter);
+
+// casos de uso : usuarios
+const registerUserUseCase: RegisterUserUseCase = new RegisterUserUseCase(userRepository, roleRepository, passwordService, tokenService)
+const authenticateUserUseCase: AuthenticateUserUseCase = new AuthenticateUserUseCase(userRepository, passwordService, tokenService)
+const getPaginatedUserUseCase: GetPaginatedUserUseCase = new GetPaginatedUserUseCase(userRepository)
+const changePasswordUseCase: ChangePasswordUseCase = new ChangePasswordUseCase(userRepository, passwordService)
+const forgotPasswordStep1UseCase = new ForgotPasswordStep1UseCase(userRepository, emailService);
+const forgotPasswordStep2UseCase = new ForgotPasswordStep2UseCase(userRepository, passwordService);
+
+// controllers
+export const userController: UserController = new UserController(
+    registerUserUseCase,
+    authenticateUserUseCase,
+    getPaginatedUserUseCase,
+    changePasswordUseCase,
+    forgotPasswordStep1UseCase,
+    forgotPasswordStep2UseCase
+)
+
+export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);
+

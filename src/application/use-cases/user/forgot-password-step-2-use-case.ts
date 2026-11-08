@@ -15,7 +15,10 @@ export class ForgotPasswordStep2UseCase {
     ) {}
 
     async execute(input: ForgotPassworfStep2Input): Promise<boolean> {
+        // 1 -  crear un hash de la nueva contraseña
         let passwordHashed = await this.passwordService.hash(input.newPassword)
+
+        // 2 - aplicar el código de restablecimiento de contraseña y cambiar la contraseña
         let result = await this.userRepository.forgotPasswordApplyCode(input.email, input.code, passwordHashed);
         return result;
     }
