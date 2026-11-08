@@ -7,7 +7,6 @@ interface GetPaginatedUserInput {
     sortOrder: string;
 }
 
-//getPaginated: (pageNumber: number, pageSize: number, sortBy: string, sortOrder: string) => Promise<UserEntity[]>;
 export class GetPaginatedUserUseCase {
 
     constructor(

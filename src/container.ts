@@ -1,4 +1,5 @@
 import { AuthenticateUserUseCase } from "./application/use-cases/user/authenticate-user-use-case";
+import { ChangePasswordUseCase } from "./application/use-cases/user/change-password-use-case";
 import { GetPaginatedUserUseCase } from "./application/use-cases/user/get-paginated-user-use-case";
 import { RegisterUserUseCase } from "./application/use-cases/user/register-user-use-case";
 import { RoleRepository } from "./domain/repositories/role-repository";
@@ -24,12 +25,14 @@ const passwordService: PasswordService = new PasswordServiceImpl()
 const registerUserUseCase: RegisterUserUseCase = new RegisterUserUseCase(userRepository, roleRepository, passwordService, tokenService)
 const authenticateUserUseCase: AuthenticateUserUseCase = new AuthenticateUserUseCase(userRepository, passwordService, tokenService)
 const getPaginatedUserUseCase: GetPaginatedUserUseCase = new GetPaginatedUserUseCase(userRepository)
+const changePasswordUseCase: ChangePasswordUseCase = new ChangePasswordUseCase(userRepository, passwordService)
 
 // controllers
 export const userController: UserController = new UserController(
     registerUserUseCase,
     authenticateUserUseCase,
-    getPaginatedUserUseCase
+    getPaginatedUserUseCase,
+    changePasswordUseCase
 )
 
 export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);

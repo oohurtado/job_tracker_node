@@ -53,6 +53,34 @@ export class UserRepositoryImpl implements UserRepository {
             result.password_reset_code);
     }
 
+    async getById(id: number): Promise<UserEntity | null> {
+        let result = await prisma.user.findUnique({
+            where: { id: id },
+            select: {
+                id: true,
+                password: true,
+                email: true,
+                first_name: true,
+                last_name: true,
+                created_at: true,
+                password_reset_code: true
+            }
+        })
+
+        if (result === null) {
+            throw new Error("No se encontró el correo electrónico");
+        }
+
+        return new UserEntity(
+            result.id, 
+            result.email,          
+            result.password,   
+            result.first_name, 
+            result.last_name, 
+            result.created_at,
+            result.password_reset_code);
+    }    
+
     async getPaginated (pageNumber: number, pageSize: number, sortBy: string, sortOrder: string) : Promise<UserEntity[]> {
         const skipRows = (pageNumber - 1) * pageSize;
         

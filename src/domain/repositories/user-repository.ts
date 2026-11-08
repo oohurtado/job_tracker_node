@@ -20,6 +20,9 @@ export interface UserRepository {
     // get credentials
     getByEmail(email: string) : Promise<UserEntity | null>;
 
+    // get credentials
+    getById(id: number) : Promise<UserEntity | null>;
+
     // get a paginated list of users
     getPaginated(pageNumber: number, pageSize: number, sortBy: string, sortOrder: string) : Promise<UserEntity[]>;
 
