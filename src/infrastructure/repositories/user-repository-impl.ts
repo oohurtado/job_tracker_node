@@ -1,6 +1,5 @@
 import { prisma } from "../../_lib/prisma";
 import { UserEntity } from "../../domain/models/entities/user-entity";
-import { UserReadModel } from "../../domain/models/read-models/user-read-model";
 import { UserRepository } from "../../domain/repositories/user-repository";
 
 export class UserRepositoryImpl implements UserRepository {
@@ -115,43 +114,33 @@ export class UserRepositoryImpl implements UserRepository {
         })        
     };
 
-    async forgotPasswordStep1 (email: string, code: string) : Promise<UserReadModel> {
-            let result  =await prisma.user.update({
-            data: {
-                password_reset_code: code
-            },
+    async forgotPasswordSaveCode(email: string, code: string): Promise<void> {
+        await prisma.user.update({
             where: {
                 email: email
             },
-            select: {
-                id: true,
-                email: true,
-                first_name: true,
-                last_name: true
-            }
-        })
-
-        if (result === null) {
-            throw new Error("No se encontró el correo electrónico");
-        }        
-
-        return new UserReadModel(
-            result.id,
-            result.email,
-            `${result.first_name} ${result.last_name}`,            
-        )
-    };
-
-    async forgotPasswordStep2 (email: string, code: string, newPassword: string) : Promise<void> {
-        await prisma.user.update({
-            where: {
-                email: email,
-                password_reset_code: code
-            },
             data: {
-                password_reset_code: newPassword
-            },
-        })
-    };
+                password_reset_code: code
+            }
+        })        
+    }
 
+    async forgotPasswordApplyCode(email: string, code: string, newPassword: string): Promise<boolean> {
+        try {
+            await prisma.user.update({
+                where: {
+                    email: email,
+                    password_reset_code: code                
+                },
+                data: {
+                    password: newPassword,
+                    password_reset_code: null
+                },
+            })
+        } catch (error) {
+            return false;
+        }
+
+        return true;
+    }
 }

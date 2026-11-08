@@ -3,40 +3,40 @@
 CASOS DE USO
 
 users
-* register (PUBLIC) *
-* log-in (PUBLIC) *
-* get-paginated (role:ADMIN) *
-* change-password (role:USER) *
-* forgot-password-step-1 (envia correo con codigo) (PUBLIC)
-* forgot-password-step-2 (aplica codigo y cambia contraseña) (PUBLIC)
-* get-info (user+personal_information)
+* register (PUBLIC)
+* log-in (PUBLIC)
+* get-paginated (role:ADMIN)
+* change-password (role:USER)
+! forgot-password-step-1 (envia correo con codigo) (PUBLIC)
+! forgot-password-step-2 (aplica codigo y cambia contraseña) (PUBLIC)
+- get-info (user+personal_information)
 
 personal_information (role:USER)
-* update
-* delete
-* get
+- update
+- delete
+- get
 
 jobs (role:USER)
-* create
-* update
-* delete
-* get-one
-* get-paginated (busqueda, ordenado por fecha)
-* get-stats (agrupar por status, contar)
+- create
+- update
+- delete
+- get-one
+- get-paginated (busqueda, ordenado por fecha)
+- get-stats (agrupar por status, contar)
 
 job_events (role:USER)
-* create
-* get-one
-* get-all
-* update
-* delete
+- create
+- get-one
+- get-all
+- update
+- delete
 
 interview_questions
-* create
-* get-one
-* get-all
-* update
-* delete
+- create
+- get-one
+- get-all
+- update
+- delete
 
 /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 

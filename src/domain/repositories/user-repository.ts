@@ -10,7 +10,6 @@
 
 import { UserEntity } from "../models/entities/user-entity";
 import { TokenReadModel } from "../models/read-models/token-read-model";
-import { UserReadModel } from "../models/read-models/user-read-model";
 
 export interface UserRepository {
 
@@ -29,10 +28,7 @@ export interface UserRepository {
     // change the password of a user
     changePassword(userId: number, newPassword: string) : Promise<void>;
 
-    // forgot password step 1: get info to send email and save code
-    forgotPasswordStep1(email: string, code: string) : Promise<UserReadModel>;
-
-    // forgot password step 2: apply the code and change the password
-    forgotPasswordStep2(email: string, code: string, newPassword: string) : Promise<void>;
+    forgotPasswordSaveCode(email: string, code: string) : Promise<void>;
+    forgotPasswordApplyCode(email: string, code: string, newPassword: string) : Promise<boolean>;
 
 }
