@@ -142,3 +142,9 @@ Contraseña
 JWT
   > npm install jsonwebtoken
   > npm install -D @types/jsonwebtoken
+
+MAIL
+  > npm install mailtrap
+
+  > npm install nodemailer
+  > npm install -D @types/nodemailer  

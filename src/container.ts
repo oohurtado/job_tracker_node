@@ -1,3 +1,8 @@
+import { env } from './_config/env';
+
+import { MailtrapService } from './_shared/services/email-service-impl';
+import nodemailer from 'nodemailer';
+
 import { AuthenticateUserUseCase } from "./application/use-cases/user/authenticate-user-use-case";
 import { ChangePasswordUseCase } from "./application/use-cases/user/change-password-use-case";
 import { GetPaginatedUserUseCase } from "./application/use-cases/user/get-paginated-user-use-case";
@@ -36,3 +41,16 @@ export const userController: UserController = new UserController(
 )
 
 export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);
+
+// EMAIL SERVICE
+const mailTransporter = nodemailer.createTransport({
+    host: env.MAIL_HOST,
+    port: env.MAIL_PORT,
+    secure: false,
+    requireTLS: true,
+    auth: {
+        user: env.MAIL_USER,
+        pass: env.MAIL_PASSWORD
+    }
+});
+export const emailService = new MailtrapService(mailTransporter);
