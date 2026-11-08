@@ -16,4 +16,8 @@ router.get("/users", authenticateJwt(tokenService), authorize("admin"), (req, re
     void userController.getPaginated(req, res, next);
 });
 
+router.put("/users/password", authenticateJwt(tokenService), (req, res, next) => {
+    void userController.changePassword(req, res, next);
+});
+
 export default router;
