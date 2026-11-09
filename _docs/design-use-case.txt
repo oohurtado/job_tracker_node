@@ -12,15 +12,9 @@ users
 * get-info (role:USER)
 
 personal_information (role:USER)
-- update
-    u:first_name                      String @db.VarChar(50)
-    u:last_name                       String @db.VarChar(50)    
-    pi:birth_date                      DateTime  @db.Date
-    pi:birth_state                     String? @db.VarChar(50)
-    pi:birth_country                   String? @db.VarChar(50)
-    pi:updated_at                      DateTime @updatedAt
-- delete
-- get
+* update
+* delete
+* get
 
 jobs (role:USER)
 - create
@@ -47,8 +41,8 @@ interview_questions
 /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 
 Módulo                                          | Días estimados
-Users (6 casos)	                                        2–3             5,6,7
-Personal Information (3 casos)	                        1               8
+Users (6 casos)	                                        2–3             5,6,7           YA
+Personal Information (3 casos)	                        1               8               YA
 Jobs (6 casos)	                                        2–3             9,10
 Job Events (5 casos)	                                1–2             11,12
 Interview Questions (5 casos)	                        1–2             13,14

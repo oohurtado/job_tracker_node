@@ -1,7 +1,7 @@
 import es from "zod/v4/locales/es.js";
 import { prisma } from "../../_lib/prisma";
 import { UserEntity } from "../../domain/models/entities/user-entity";
-import { UserPersonalInformationReadModel } from "../../domain/models/read-models/user-personal-information-read-model";
+import { UserPersonalInformationReadModel } from "../../domain/models/read-models/user/user-personal-information-read-model";
 import { UserRepository } from "../../domain/repositories/user-repository";
 
 export class UserRepositoryImpl implements UserRepository {

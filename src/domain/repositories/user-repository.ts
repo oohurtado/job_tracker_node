@@ -1,5 +1,5 @@
 import { UserEntity } from "../models/entities/user-entity";
-import { UserPersonalInformationReadModel } from "../models/read-models/user-personal-information-read-model";
+import { UserPersonalInformationReadModel } from "../models/read-models/user/user-personal-information-read-model";
 
 export interface UserRepository {
 

@@ -1,4 +1,4 @@
-import { UserPersonalInformationReadModel } from "../../../../domain/models/read-models/user-personal-information-read-model";
+import { UserPersonalInformationReadModel } from "../../../../domain/models/read-models/user/user-personal-information-read-model";
 import { UserRepository } from "../../../../domain/repositories/user-repository";
 
 interface GetPersonalInformationInput {

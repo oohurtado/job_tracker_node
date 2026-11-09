@@ -1,4 +1,4 @@
-import { TokenReadModel } from "../../../domain/models/read-models/token-read-model"
+import { TokenReadModel } from "../../../domain/models/read-models/user/token-read-model"
 import { UserRepository } from "../../../domain/repositories/user-repository"
 import { PasswordService } from "../../../domain/services/password-service"
 import { TokenService } from "../../../domain/services/token-service"
