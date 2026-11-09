@@ -1,18 +1,18 @@
 
 import type { Request, Response, NextFunction } from "express";
-import { RegisterUserUseCase } from "../../application/use-cases/user/register-user-use-case";
+import { RegisterUserUseCase } from "../../application/use-cases/user-public/register-user-use-case";
 import { registerUserSchema } from "../validators/user/register-validator";
 import { authenticateUserSchema } from "../validators/user/authenticate-validator";
-import { AuthenticateUserUseCase } from "../../application/use-cases/user/authenticate-user-use-case";
-import { GetPaginatedUserUseCase } from "../../application/use-cases/user/get-paginated-user-use-case";
+import { AuthenticateUserUseCase } from "../../application/use-cases/user-public/authenticate-user-use-case";
+import { GetPaginatedUserUseCase } from "../../application/use-cases/user-auth/get-paginated-user-use-case";
 import { changePasswordSchema } from "../validators/user/change-password-validator";
-import { ChangePasswordUseCase } from "../../application/use-cases/user/change-password-use-case";
+import { ChangePasswordUseCase } from "../../application/use-cases/user-auth/change-password-use-case";
 import { idSchema } from "../validators/id-schema";
-import { ForgotPasswordStep1UseCase } from "../../application/use-cases/user/forgot-password-step-1-use-case";
-import { ForgotPasswordStep2UseCase } from "../../application/use-cases/user/forgot-password-step-2-use-case";
+import { ForgotPasswordStep1UseCase } from "../../application/use-cases/user-public/forgot-password-step-1-use-case";
+import { ForgotPasswordStep2UseCase } from "../../application/use-cases/user-public/forgot-password-step-2-use-case";
 import { forgotPassword1Schema } from "../validators/user/forgot-password-1-validator";
 import { forgotPassword2Schema } from "../validators/user/forgot-password-2-validator";
-import { GetInformationUseCase } from "../../application/use-cases/user/get-information-use-case";
+import { GetMeUseCase } from "../../application/use-cases/user-auth/get-me-use-case";
 
 export class UserController {
 
@@ -23,8 +23,8 @@ export class UserController {
         private readonly changePasswordUseCase: ChangePasswordUseCase,
         private readonly forgotPasswordStep1UseCase: ForgotPasswordStep1UseCase,
         private readonly forgotPasswordStep2UseCase: ForgotPasswordStep2UseCase,
-        private readonly getInformationUseCase: GetInformationUseCase
-    ) {}
+        private readonly getMeUseCase: GetMeUseCase
+    ) { }
 
     async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         
@@ -131,10 +131,10 @@ export class UserController {
         }
     }    
     
-    async getInformation(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async getMe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = idSchema.parse(req.user!.id);
-            const result = await this.getInformationUseCase.execute({ userId });
+            const result = await this.getMeUseCase.execute({ userId });
             res.status(200).json(result);
         } catch (error) {
             next(error);

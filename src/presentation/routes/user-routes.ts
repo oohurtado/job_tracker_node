@@ -29,7 +29,7 @@ router.put("/users/forgot-password-2", (req, res, next) => {
 });
 
 router.get("/users/me", authenticateJwt(tokenService), (req, res, next) => {
-    void userController.getInformation(req, res, next);
+    void userController.getMe(req, res, next);
 });
 
 export default router;

@@ -1,9 +1,11 @@
+import es from "zod/v4/locales/es.js";
 import { prisma } from "../../_lib/prisma";
 import { UserEntity } from "../../domain/models/entities/user-entity";
+import { UserPersonalInformationReadModel } from "../../domain/models/read-models/user-personal-information-read-model";
 import { UserRepository } from "../../domain/repositories/user-repository";
 
 export class UserRepositoryImpl implements UserRepository {
-    
+            
     async register(email: string, password: string, firstName: string, lastName: string) : Promise<UserEntity> {
         let result = await prisma.user.create({
             data: {
@@ -143,4 +145,54 @@ export class UserRepositoryImpl implements UserRepository {
 
         return true;
     }
+
+    async deletePersonalInformation(userId: number): Promise<boolean> {
+        try {
+            await prisma.personalInformation.delete({
+                where: {
+                    user_id: userId
+                }
+            })
+        } catch (error) {
+            return false
+        }
+
+        return true
+    }
+
+    async getPersonalInformation(userId: number): Promise<UserPersonalInformationReadModel | null> {
+        let result = await prisma.user.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                first_name: true,
+                last_name: true,
+                email: true,
+                created_at: true,
+                personal_information: {
+                    select: {
+                        birth_country: true,
+                        birth_date: true,
+                        birth_state: true,                        
+                    }
+                }
+            }
+        })
+
+        if (result === null) {
+            return null
+        }
+
+        return new UserPersonalInformationReadModel(
+            result.first_name,
+            result.last_name,
+            result.email,
+            result.created_at,
+            result.personal_information?.birth_country ?? null,                        
+            result.personal_information?.birth_state ?? null,
+            result.personal_information?.birth_date ?? null
+        )
+    }
+
 }

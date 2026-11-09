@@ -13,6 +13,12 @@ users
 
 personal_information (role:USER)
 - update
+    u:first_name                      String @db.VarChar(50)
+    u:last_name                       String @db.VarChar(50)    
+    pi:birth_date                      DateTime  @db.Date
+    pi:birth_state                     String? @db.VarChar(50)
+    pi:birth_country                   String? @db.VarChar(50)
+    pi:updated_at                      DateTime @updatedAt
 - delete
 - get
 

@@ -3,10 +3,10 @@ import { env } from './_config/env';
 import { MailtrapService } from './_shared/services/email-service-impl';
 import nodemailer from 'nodemailer';
 
-import { AuthenticateUserUseCase } from "./application/use-cases/user/authenticate-user-use-case";
-import { ChangePasswordUseCase } from "./application/use-cases/user/change-password-use-case";
-import { GetPaginatedUserUseCase } from "./application/use-cases/user/get-paginated-user-use-case";
-import { RegisterUserUseCase } from "./application/use-cases/user/register-user-use-case";
+import { AuthenticateUserUseCase } from "./application/use-cases/user-public/authenticate-user-use-case";
+import { ChangePasswordUseCase } from "./application/use-cases/user-auth/change-password-use-case";
+import { GetPaginatedUserUseCase } from "./application/use-cases/user-auth/get-paginated-user-use-case";
+import { RegisterUserUseCase } from "./application/use-cases/user-public/register-user-use-case";
 import { RoleRepository } from "./domain/repositories/role-repository";
 import { UserRepository } from "./domain/repositories/user-repository";
 import { PasswordService } from "./domain/services/password-service";
@@ -17,9 +17,9 @@ import { PasswordServiceImpl } from "./infrastructure/services/password-service-
 import { TokenServiceImpl } from "./infrastructure/services/token-service-impl";
 import { UserController } from "./presentation/controllers/user-controller";
 import { authorizeMiddleware } from "./presentation/middlewares/authorize-middleware";
-import { ForgotPasswordStep1UseCase } from './application/use-cases/user/forgot-password-step-1-use-case';
-import { ForgotPasswordStep2UseCase } from './application/use-cases/user/forgot-password-step-2-use-case';
-import { GetInformationUseCase } from './application/use-cases/user/get-information-use-case';
+import { ForgotPasswordStep1UseCase } from './application/use-cases/user-public/forgot-password-step-1-use-case';
+import { ForgotPasswordStep2UseCase } from './application/use-cases/user-public/forgot-password-step-2-use-case';
+import { GetMeUseCase } from './application/use-cases/user-auth/get-me-use-case';
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
@@ -47,7 +47,7 @@ const getPaginatedUserUseCase: GetPaginatedUserUseCase = new GetPaginatedUserUse
 const changePasswordUseCase: ChangePasswordUseCase = new ChangePasswordUseCase(userRepository, passwordService)
 const forgotPasswordStep1UseCase = new ForgotPasswordStep1UseCase(userRepository, emailService);
 const forgotPasswordStep2UseCase = new ForgotPasswordStep2UseCase(userRepository, passwordService);
-const getInformationUseCase = new GetInformationUseCase(userRepository);
+const getMeUseCase = new GetMeUseCase(userRepository);
 
 // controllers
 export const userController: UserController = new UserController(
@@ -57,7 +57,7 @@ export const userController: UserController = new UserController(
     changePasswordUseCase,
     forgotPasswordStep1UseCase,
     forgotPasswordStep2UseCase,
-    getInformationUseCase
+    getMeUseCase
 )
 
 export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);

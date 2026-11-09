@@ -1,16 +1,5 @@
-
-/*
-* register (PUBLIC)
-* log-in (PUBLIC)
-* get-paginated (role:ADMIN)
-* change-password (role:USER)
-* forgot-password-step-1 (envia correo con codigo) (PUBLIC)
-* forgot-password-step-2 (aplica codigo y cambia contraseña) (PUBLIC)
-*/
-
-import { PersonalInformationEntity } from "../models/entities/personal-information-entity";
 import { UserEntity } from "../models/entities/user-entity";
-import { TokenReadModel } from "../models/read-models/token-read-model";
+import { UserPersonalInformationReadModel } from "../models/read-models/user-personal-information-read-model";
 
 export interface UserRepository {
 
@@ -31,5 +20,11 @@ export interface UserRepository {
 
     // process for forgot password
     forgotPasswordSaveCode(email: string, code: string) : Promise<void>;
-    forgotPasswordApplyCode(email: string, code: string, newPassword: string) : Promise<boolean>;    
+    forgotPasswordApplyCode(email: string, code: string, newPassword: string) : Promise<boolean>; 
+    
+    // deletes personal information
+    deletePersonalInformation(userId: number): Promise<boolean>
+
+    // gets personal information
+    getPersonalInformation(userId: number) : Promise<UserPersonalInformationReadModel | null>
 }
