@@ -45,7 +45,7 @@ export interface JobRepository {
             sourceDetail?: string,
             sourceType?: string,
             notes?: string,
-            salaryMin?: number,
+            salaryMin: number,
             salaryMax?: number,
             salaryCurrency?: string,
             salaryPeriod?: string
