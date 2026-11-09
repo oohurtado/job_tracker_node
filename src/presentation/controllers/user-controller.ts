@@ -13,6 +13,10 @@ import { ForgotPasswordStep2UseCase } from "../../application/use-cases/user-pub
 import { forgotPassword1Schema } from "../validators/user/forgot-password-1-validator";
 import { forgotPassword2Schema } from "../validators/user/forgot-password-2-validator";
 import { GetMeUseCase } from "../../application/use-cases/user-auth/get-me-use-case";
+import { GetUserPersonalInformationUseCase } from "../../application/use-cases/user-auth/personal-information/get-personal-information-use-case";
+import { UpdateUserPersonalInformationUseCase } from "../../application/use-cases/user-auth/personal-information/update-personal-information-use-case";
+import { DeleteUserPersonalInformationUseCase } from "../../application/use-cases/user-auth/personal-information/delete-personal-information-use-case";
+import { updateUserPersonalInformationSchema } from "../validators/user/update-user-personal-information-validator";
 
 export class UserController {
 
@@ -23,7 +27,10 @@ export class UserController {
         private readonly changePasswordUseCase: ChangePasswordUseCase,
         private readonly forgotPasswordStep1UseCase: ForgotPasswordStep1UseCase,
         private readonly forgotPasswordStep2UseCase: ForgotPasswordStep2UseCase,
-        private readonly getMeUseCase: GetMeUseCase
+        private readonly getMeUseCase: GetMeUseCase,
+        private readonly getUserPersonalInformationUseCase: GetUserPersonalInformationUseCase,
+        private readonly updateUserPersonalInformationUseCase: UpdateUserPersonalInformationUseCase,
+        private readonly deleteUserPersonalInformationUseCase: DeleteUserPersonalInformationUseCase,
     ) { }
 
     async register(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -125,7 +132,7 @@ export class UserController {
                 newPassword: body.newPassword                
             });
 
-            res.status(200).json({ message: `${result ?  "Contraseña cambiada exitosamente" : "Error al cambiar la contraseña"}` });
+            res.status(200).json({ result });
         } catch (error) {
             next(error);
         }
@@ -140,5 +147,52 @@ export class UserController {
             next(error);
         }
     }
+
+    async getUserPersonalInformation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const userId = idSchema.parse(req.user!.id);
+            const result = await this.getUserPersonalInformationUseCase.execute({ userId });
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }    
+
+    
+    async deleteUserPersonalInformation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const userId = idSchema.parse(req.user!.id);
+            let result = await this.deleteUserPersonalInformationUseCase.execute({ userId });
+            res.status(200).json({ result });
+        } catch (error) {
+            next(error);
+        }
+    }   
+
+    async updateUserPersonalInformation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        
+        try {
+            const userId = idSchema.parse(req.user!.id);
+            const body = updateUserPersonalInformationSchema.parse(req.body);
+            
+            await this.updateUserPersonalInformationUseCase.execute({
+                userId: userId,
+                user: {
+                    firstName: body.firstName,
+                    lastName: body.lastName,
+                },
+                personalInformation: {
+                    birthCountry: body.birthCountry,
+                    birthState: body.birthState,
+                    birthDate: body.birthDate
+                }
+            });
+
+            res.status(200).json();
+        } catch (error) {
+            next(error);
+        }
+        
+    } 
 
 }

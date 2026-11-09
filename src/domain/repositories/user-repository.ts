@@ -27,4 +27,11 @@ export interface UserRepository {
 
     // gets personal information
     getPersonalInformation(userId: number) : Promise<UserPersonalInformationReadModel | null>
+
+    // updates personal information
+    updatePersonalInformation(
+        userId: number, 
+        user: {firstName: string; lastName: string}, 
+        personalInformation: { birthDate: Date; birthCountry: string | null, birthState: string | null }
+    ) : Promise<void>
 }

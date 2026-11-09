@@ -5,7 +5,7 @@ interface GetPersonalInformationInput {
     userId: number
 }
 
-export class GetPersonalInformationUseCase {
+export class GetUserPersonalInformationUseCase {
 
     constructor(
         private readonly userRepository: UserRepository

@@ -32,4 +32,16 @@ router.get("/users/me", authenticateJwt(tokenService), (req, res, next) => {
     void userController.getMe(req, res, next);
 });
 
+router.get("/users/personal-information", authenticateJwt(tokenService), (req, res, next) => {
+    void userController.getUserPersonalInformation(req, res, next);
+});
+
+router.put("/users/personal-information", authenticateJwt(tokenService), (req, res, next) => {
+    void userController.updateUserPersonalInformation(req, res, next);
+});
+
+router.delete("/users/personal-information", authenticateJwt(tokenService), (req, res, next) => {
+    void userController.deleteUserPersonalInformation(req, res, next);
+});
+
 export default router;

@@ -195,4 +195,38 @@ export class UserRepositoryImpl implements UserRepository {
         )
     }
 
+    async updatePersonalInformation(
+        userId: number, 
+        user: { firstName: string; lastName: string; }, 
+        personalInformation: { birthDate: Date; birthCountry: string | null; birthState: string | null; }
+    ): Promise<void> {
+        await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                first_name: user.firstName,
+                last_name: user.lastName,
+            }
+        })
+
+        await prisma.personalInformation.upsert({
+            where: {
+                user_id: userId
+            },
+            create: {
+                birth_date: personalInformation.birthDate,
+                birth_country: personalInformation.birthCountry,
+                birth_state: personalInformation.birthState,
+                user_id: userId
+            },
+            update: {
+                birth_date: personalInformation.birthDate,
+                birth_country: personalInformation.birthCountry,
+                birth_state: personalInformation.birthState,
+                user_id: userId
+            }
+        })
+    }
+
 }

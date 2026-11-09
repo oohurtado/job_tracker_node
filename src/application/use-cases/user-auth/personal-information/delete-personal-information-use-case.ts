@@ -4,7 +4,7 @@ interface DeletePersonalInformationInput {
     userId: number
 }
 
-export class DeletePersonalInformation {
+export class DeleteUserPersonalInformationUseCase {
 
     constructor(
         private readonly userRepository: UserRepository

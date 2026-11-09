@@ -20,6 +20,9 @@ import { authorizeMiddleware } from "./presentation/middlewares/authorize-middle
 import { ForgotPasswordStep1UseCase } from './application/use-cases/user-public/forgot-password-step-1-use-case';
 import { ForgotPasswordStep2UseCase } from './application/use-cases/user-public/forgot-password-step-2-use-case';
 import { GetMeUseCase } from './application/use-cases/user-auth/get-me-use-case';
+import { DeleteUserPersonalInformationUseCase } from './application/use-cases/user-auth/personal-information/delete-personal-information-use-case';
+import { GetUserPersonalInformationUseCase } from './application/use-cases/user-auth/personal-information/get-personal-information-use-case';
+import { UpdateUserPersonalInformationUseCase } from './application/use-cases/user-auth/personal-information/update-personal-information-use-case';
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
@@ -48,6 +51,9 @@ const changePasswordUseCase: ChangePasswordUseCase = new ChangePasswordUseCase(u
 const forgotPasswordStep1UseCase = new ForgotPasswordStep1UseCase(userRepository, emailService);
 const forgotPasswordStep2UseCase = new ForgotPasswordStep2UseCase(userRepository, passwordService);
 const getMeUseCase = new GetMeUseCase(userRepository);
+const deleteUserPersonalInformationUseCase = new DeleteUserPersonalInformationUseCase(userRepository)
+const getUserPersonalInformationUseCase = new GetUserPersonalInformationUseCase(userRepository)
+const updateUserPersonalInformationUseCase = new UpdateUserPersonalInformationUseCase(userRepository)
 
 // controllers
 export const userController: UserController = new UserController(
@@ -57,7 +63,10 @@ export const userController: UserController = new UserController(
     changePasswordUseCase,
     forgotPasswordStep1UseCase,
     forgotPasswordStep2UseCase,
-    getMeUseCase
+    getMeUseCase,
+    getUserPersonalInformationUseCase,
+    updateUserPersonalInformationUseCase,
+    deleteUserPersonalInformationUseCase,
 )
 
 export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);
