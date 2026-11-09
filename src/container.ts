@@ -19,6 +19,7 @@ import { UserController } from "./presentation/controllers/user-controller";
 import { authorizeMiddleware } from "./presentation/middlewares/authorize-middleware";
 import { ForgotPasswordStep1UseCase } from './application/use-cases/user/forgot-password-step-1-use-case';
 import { ForgotPasswordStep2UseCase } from './application/use-cases/user/forgot-password-step-2-use-case';
+import { GetInformationUseCase } from './application/use-cases/user/get-information-use-case';
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
@@ -46,6 +47,7 @@ const getPaginatedUserUseCase: GetPaginatedUserUseCase = new GetPaginatedUserUse
 const changePasswordUseCase: ChangePasswordUseCase = new ChangePasswordUseCase(userRepository, passwordService)
 const forgotPasswordStep1UseCase = new ForgotPasswordStep1UseCase(userRepository, emailService);
 const forgotPasswordStep2UseCase = new ForgotPasswordStep2UseCase(userRepository, passwordService);
+const getInformationUseCase = new GetInformationUseCase(userRepository);
 
 // controllers
 export const userController: UserController = new UserController(
@@ -54,7 +56,8 @@ export const userController: UserController = new UserController(
     getPaginatedUserUseCase,
     changePasswordUseCase,
     forgotPasswordStep1UseCase,
-    forgotPasswordStep2UseCase
+    forgotPasswordStep2UseCase,
+    getInformationUseCase
 )
 
 export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);

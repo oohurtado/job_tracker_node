@@ -9,7 +9,7 @@ users
 * change-password (role:USER)
 * forgot-password-step-1 (envia correo con codigo) (PUBLIC)
 * forgot-password-step-2 (aplica codigo y cambia contraseña) (PUBLIC)
-! get-info (user+personal_information)
+* get-info (role:USER)
 
 personal_information (role:USER)
 - update

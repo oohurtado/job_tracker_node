@@ -8,6 +8,7 @@
 * forgot-password-step-2 (aplica codigo y cambia contraseña) (PUBLIC)
 */
 
+import { PersonalInformationEntity } from "../models/entities/personal-information-entity";
 import { UserEntity } from "../models/entities/user-entity";
 import { TokenReadModel } from "../models/read-models/token-read-model";
 
@@ -28,7 +29,7 @@ export interface UserRepository {
     // change the password of a user
     changePassword(userId: number, newPassword: string) : Promise<void>;
 
+    // process for forgot password
     forgotPasswordSaveCode(email: string, code: string) : Promise<void>;
-    forgotPasswordApplyCode(email: string, code: string, newPassword: string) : Promise<boolean>;
-
+    forgotPasswordApplyCode(email: string, code: string, newPassword: string) : Promise<boolean>;    
 }
