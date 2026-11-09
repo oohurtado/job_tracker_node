@@ -215,7 +215,7 @@ export class UserRepositoryImpl implements UserRepository {
                 user_id: userId
             },
             create: {
-                birth_date: personalInformation.birthDate,
+                birth_date: new Date(personalInformation.birthDate ?? ''),
                 birth_country: personalInformation.birthCountry,
                 birth_state: personalInformation.birthState,
                 user_id: userId

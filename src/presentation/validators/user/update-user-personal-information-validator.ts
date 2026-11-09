@@ -23,5 +23,5 @@ export const updateUserPersonalInformationSchema = z.object({
 
     birthDate: z.coerce.date({
         error: "La fecha de nacimiento no es válida"
-    }).nullable()
+    })
 });
