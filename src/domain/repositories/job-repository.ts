@@ -77,7 +77,7 @@ export interface JobRepository {
     delete(
         userId: number, 
         id: number,
-    ) : Promise<void>    
+    ) : Promise<boolean>    
 
     getPaginated(
         userId: number, 
