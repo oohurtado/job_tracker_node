@@ -22,7 +22,8 @@ jobs (role:USER)
 - delete
 - get-one
 - get-paginated (busqueda, ordenado por fecha)
-- get-stats (agrupar por status, contar)
+- get-stats-work-model
+- get-stats-status
 
 job_events (role:USER)
 - create

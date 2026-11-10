@@ -7,7 +7,7 @@ interface GetPaginatedUserInput {
     sortOrder: string;
 }
 
-export class GetPaginatedUserUseCase {
+export class GetPaginatedUsersUseCase {
 
     constructor(
         private readonly userRepository: UserRepository

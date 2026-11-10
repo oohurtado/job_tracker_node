@@ -4,7 +4,7 @@ import { RegisterUserUseCase } from "../../application/use-cases/user-public/reg
 import { registerUserSchema } from "../validators/user/register-validator";
 import { authenticateUserSchema } from "../validators/user/authenticate-validator";
 import { AuthenticateUserUseCase } from "../../application/use-cases/user-public/authenticate-user-use-case";
-import { GetPaginatedUserUseCase } from "../../application/use-cases/user-auth/get-paginated-user-use-case";
+import { GetPaginatedUsersUseCase } from "../../application/use-cases/user-auth/get-paginated-users-use-case";
 import { changePasswordSchema } from "../validators/user/change-password-validator";
 import { ChangePasswordUseCase } from "../../application/use-cases/user-auth/change-password-use-case";
 import { idSchema } from "../validators/id-schema";
@@ -21,12 +21,12 @@ import { updateUserPersonalInformationSchema } from "../validators/user/update-u
 export class UserController {
 
     constructor(
-        private readonly registerUseCase: RegisterUserUseCase,
-        private readonly authenticateUseCase: AuthenticateUserUseCase,
-        private readonly getPaginatedUseCase: GetPaginatedUserUseCase,
-        private readonly changePasswordUseCase: ChangePasswordUseCase,
-        private readonly forgotPasswordStep1UseCase: ForgotPasswordStep1UseCase,
-        private readonly forgotPasswordStep2UseCase: ForgotPasswordStep2UseCase,
+        private readonly registerUserUseCase: RegisterUserUseCase,
+        private readonly authenticateUserUseCase: AuthenticateUserUseCase,
+        private readonly getPaginatedUsersUseCase: GetPaginatedUsersUseCase,
+        private readonly changePasswordUserUseCase: ChangePasswordUseCase,
+        private readonly forgotPasswordStep1UserUseCase: ForgotPasswordStep1UseCase,
+        private readonly forgotPasswordStep2UserUseCase: ForgotPasswordStep2UseCase,
         private readonly getMeUseCase: GetMeUseCase,
         private readonly getUserPersonalInformationUseCase: GetUserPersonalInformationUseCase,
         private readonly updateUserPersonalInformationUseCase: UpdateUserPersonalInformationUseCase,
@@ -38,7 +38,7 @@ export class UserController {
         try {
             const body = registerUserSchema.parse(req.body);
             
-            const result = await this.registerUseCase.execute({
+            const result = await this.registerUserUseCase.execute({
                 email: body.email,
                 password: body.password,
                 firstName: body.firstName,
@@ -57,7 +57,7 @@ export class UserController {
         try {
             const body = authenticateUserSchema.parse(req.body);
 
-            const result = await this.authenticateUseCase.execute({
+            const result = await this.authenticateUserUseCase.execute({
                 email: body.email,
                 password: body.password,
             });
@@ -75,7 +75,7 @@ export class UserController {
             const sortBy = (req.query.sortBy as string) || 'id';
             const sortOrder = (req.query.sortOrder as string) || 'asc';
 
-            const result = await this.getPaginatedUseCase.execute({
+            const result = await this.getPaginatedUsersUseCase.execute({
                 pageNumber,
                 pageSize,
                 sortBy,
@@ -94,7 +94,7 @@ export class UserController {
             const body = changePasswordSchema.parse(req.body);
             let userId = idSchema.parse(req.user!.id);
 
-            const result = await this.changePasswordUseCase.execute({
+            const result = await this.changePasswordUserUseCase.execute({
                 userId,
                 oldPassword: body.oldPassword,
                 newPassword: body.newPassword
@@ -111,7 +111,7 @@ export class UserController {
         try {
             let body = forgotPassword1Schema.parse(req.body);
 
-            await this.forgotPasswordStep1UseCase.execute({
+            await this.forgotPasswordStep1UserUseCase.execute({
                 email: body.email
             });
 
@@ -126,7 +126,7 @@ export class UserController {
         try {            
             let body = forgotPassword2Schema.parse(req.body);
 
-            let result = await this.forgotPasswordStep2UseCase.execute({
+            let result = await this.forgotPasswordStep2UserUseCase.execute({
                 email: body.email,
                 code: body.code,
                 newPassword: body.newPassword                

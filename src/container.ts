@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer';
 
 import { AuthenticateUserUseCase } from "./application/use-cases/user-public/authenticate-user-use-case";
 import { ChangePasswordUseCase } from "./application/use-cases/user-auth/change-password-use-case";
-import { GetPaginatedUserUseCase } from "./application/use-cases/user-auth/get-paginated-user-use-case";
+import { GetPaginatedUsersUseCase } from "./application/use-cases/user-auth/get-paginated-users-use-case";
 import { RegisterUserUseCase } from "./application/use-cases/user-public/register-user-use-case";
 import { RoleRepository } from "./domain/repositories/role-repository";
 import { UserRepository } from "./domain/repositories/user-repository";
@@ -46,7 +46,7 @@ export const emailService = new MailtrapService(mailTransporter);
 // casos de uso : usuarios
 const registerUserUseCase: RegisterUserUseCase = new RegisterUserUseCase(userRepository, roleRepository, passwordService, tokenService)
 const authenticateUserUseCase: AuthenticateUserUseCase = new AuthenticateUserUseCase(userRepository, passwordService, tokenService)
-const getPaginatedUserUseCase: GetPaginatedUserUseCase = new GetPaginatedUserUseCase(userRepository)
+const getPaginatedUsersUseCase: GetPaginatedUsersUseCase = new GetPaginatedUsersUseCase(userRepository)
 const changePasswordUseCase: ChangePasswordUseCase = new ChangePasswordUseCase(userRepository, passwordService)
 const forgotPasswordStep1UseCase = new ForgotPasswordStep1UseCase(userRepository, emailService);
 const forgotPasswordStep2UseCase = new ForgotPasswordStep2UseCase(userRepository, passwordService);
@@ -59,7 +59,7 @@ const updateUserPersonalInformationUseCase = new UpdateUserPersonalInformationUs
 export const userController: UserController = new UserController(
     registerUserUseCase,
     authenticateUserUseCase,
-    getPaginatedUserUseCase,
+    getPaginatedUsersUseCase,
     changePasswordUseCase,
     forgotPasswordStep1UseCase,
     forgotPasswordStep2UseCase,

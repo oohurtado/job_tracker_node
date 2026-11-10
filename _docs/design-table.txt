@@ -52,18 +52,6 @@ TABLE - job_events
 - id [PK]
 - job_id [FK]
 - status
-        Guardada | saved | La encontraste pero aún no aplicas
-        Postulado | applied | Ya enviaste tu postulación
-        En revisión	| in_review	| Confirmaron recepción o la están evaluando
-        Contactado | contacted | Un reclutador te escribió o llamó
-        En entrevistas | interviewing |	Estás en el proceso (1.ª, 2.ª, 3.ª entrevista)
-        Prueba técnica | assessment	| Te pidieron un examen o ejercicio
-        Oferta | offer | Te hicieron una oferta
-        Aceptada | accepted	| Aceptaste la oferta
-        Rechazada | rejected | La empresa te descartó
-        Declinada | declined | Tú rechazaste la oferta o retiraste tu candidatura
-        Sin respuesta | no_response | Pasó el tiempo y nadie contestó
-        Cerrada	| closed | La vacante se canceló o se cubrió
 - details : string
 - event_at : datetime
 
