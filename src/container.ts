@@ -23,10 +23,20 @@ import { GetMeUseCase } from './application/use-cases/user-auth/get-me-use-case'
 import { DeleteUserPersonalInformationUseCase } from './application/use-cases/user-auth/personal-information/delete-personal-information-use-case';
 import { GetUserPersonalInformationUseCase } from './application/use-cases/user-auth/personal-information/get-personal-information-use-case';
 import { UpdateUserPersonalInformationUseCase } from './application/use-cases/user-auth/personal-information/update-personal-information-use-case';
+import { JobRepository } from './domain/repositories/job-repository';
+import { JobRepositoryImpl } from './infrastructure/repositories/job-repository-impl';
+import { CreateJobUseCase } from './application/use-cases/job/create-job-use-case';
+import { DeleteJobUseCase } from './application/use-cases/job/delete-job-use-case';
+import { GetJobUseCase } from './application/use-cases/job/get-job-use-case';
+import { GetPaginatedJobsUseCase } from './application/use-cases/job/get-paginated-jobs-use-case';
+import { GetStatsJobStatusUseCase } from './application/use-cases/job/get-stats-job-status-use-case';
+import { GetStatsJobWorkModelUseCase } from './application/use-cases/job/get-stats-job-work-model-use-case';
+import { UpdateJobUseCase } from './application/use-cases/job/update-job-use-case';
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
 const roleRepository: RoleRepository = new RoleRepositoryImpl()
+const jobRepository: JobRepository = new JobRepositoryImpl()
 
 // servicios
 export const tokenService: TokenService = new TokenServiceImpl()
@@ -55,7 +65,16 @@ const deleteUserPersonalInformationUseCase = new DeleteUserPersonalInformationUs
 const getUserPersonalInformationUseCase = new GetUserPersonalInformationUseCase(userRepository)
 const updateUserPersonalInformationUseCase = new UpdateUserPersonalInformationUseCase(userRepository)
 
-// controllers
+// casos de uso : job
+const createJobUseCase: CreateJobUseCase = new CreateJobUseCase(jobRepository)
+const deleteJobUseCase: DeleteJobUseCase = new DeleteJobUseCase(jobRepository)
+const getJobUseCase: GetJobUseCase = new GetJobUseCase(jobRepository)
+const getPaginatedJobsUseCase: GetPaginatedJobsUseCase = new GetPaginatedJobsUseCase(jobRepository)
+const getStatsJobStatusUseCase: GetStatsJobStatusUseCase = new GetStatsJobStatusUseCase(jobRepository)
+const getStatsJobWorkModelUseCase: GetStatsJobWorkModelUseCase = new GetStatsJobWorkModelUseCase(jobRepository)
+const updateJobUseCase: UpdateJobUseCase = new UpdateJobUseCase(jobRepository)
+
+// controllers : usuarios
 export const userController: UserController = new UserController(
     registerUserUseCase,
     authenticateUserUseCase,
@@ -68,6 +87,8 @@ export const userController: UserController = new UserController(
     updateUserPersonalInformationUseCase,
     deleteUserPersonalInformationUseCase,
 )
+
+
 
 export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);
 
