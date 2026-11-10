@@ -32,6 +32,7 @@ import { GetPaginatedJobsUseCase } from './application/use-cases/job/get-paginat
 import { GetStatsJobStatusUseCase } from './application/use-cases/job/get-stats-job-status-use-case';
 import { GetStatsJobWorkModelUseCase } from './application/use-cases/job/get-stats-job-work-model-use-case';
 import { UpdateJobUseCase } from './application/use-cases/job/update-job-use-case';
+import { JobController } from './presentation/controllers/job-controller';
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
@@ -88,7 +89,15 @@ export const userController: UserController = new UserController(
     deleteUserPersonalInformationUseCase,
 )
 
-
+export const jobController: JobController = new JobController(
+    createJobUseCase,
+    deleteJobUseCase,
+    getJobUseCase,
+    getPaginatedJobsUseCase,
+    getStatsJobStatusUseCase,
+    getStatsJobWorkModelUseCase,
+    updateJobUseCase,
+)
 
 export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);
 

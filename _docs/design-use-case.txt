@@ -17,13 +17,13 @@ personal_information (role:USER)
 * get
 
 jobs (role:USER)
-- create
-- update
-- delete
-- get-one
-- get-paginated (busqueda, ordenado por fecha)
-- get-stats-work-model
-- get-stats-status
+* create
+* update
+* delete
+* get-one
+* get-paginated (busqueda, ordenado por fecha)
+* get-stats-work-model
+* get-stats-status
 
 job_events (role:USER)
 - create
