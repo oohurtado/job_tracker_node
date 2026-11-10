@@ -3,9 +3,9 @@ import { JobEntity } from "../../domain/models/entities/job-entity";
 import { JobStatsWorkModelReadModel } from "../../domain/models/read-models/job/job-stats-work-model-read-model";
 import { JobStatsStatusReadModel } from "../../domain/models/read-models/job/job-stats-status-read-model";
 import { JobRepository } from "../../domain/repositories/job-repository";
-import { JobSortByType } from "../../domain/types/job-sort-by-type";
-import { SortOrderType } from "../../domain/types/sort-order-type";
 import { JobStatusEnum } from "../../domain/enums/job-status-enum";
+import { JobSortByEnum } from "../../domain/enums/job-sort-by-enum";
+import { SortOrderEnum } from "../../domain/enums/sort-order-enum";
 
 export class JobRepositoryImpl implements JobRepository {
 
@@ -172,7 +172,7 @@ export class JobRepositoryImpl implements JobRepository {
         return true
     }
 
-    async getPaginated(userId: number, pageNumber: number, pageSize: number, sortBy: JobSortByType, sortOrder: SortOrderType): Promise<JobEntity[]> {
+    async getPaginated(userId: number, pageNumber: number, pageSize: number, sortBy: JobSortByEnum, sortOrder: SortOrderEnum): Promise<JobEntity[]> {
         const skipRows = (pageNumber - 1) * pageSize;
 
         const sections = await prisma.job.findMany({
@@ -211,7 +211,7 @@ export class JobRepositoryImpl implements JobRepository {
             select: {
                 job_events: {
                     orderBy: [
-                        { created_at: "desc" },
+                        { event_at: "desc" },
                         { id: "desc" }
                     ],
                     take: 1,

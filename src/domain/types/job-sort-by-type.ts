@@ -1,1 +1,0 @@
-export type JobSortByType = "company_name" | "work_model";

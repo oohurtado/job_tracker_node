@@ -1,10 +1,10 @@
 
+import { JobSortByEnum } from "../enums/job-sort-by-enum";
 import { JobStatusEnum } from "../enums/job-status-enum";
+import { SortOrderEnum } from "../enums/sort-order-enum";
 import { JobEntity } from "../models/entities/job-entity";
 import { JobStatsStatusReadModel } from "../models/read-models/job/job-stats-status-read-model";
 import { JobStatsWorkModelReadModel } from "../models/read-models/job/job-stats-work-model-read-model";
-import { JobSortByType } from "../types/job-sort-by-type";
-import { SortOrderType } from "../types/sort-order-type";
 
 export interface JobRepository {
 
@@ -58,8 +58,8 @@ export interface JobRepository {
         userId: number, 
         pageNumber: number, 
         pageSize: number, 
-        sortBy: JobSortByType, 
-        sortOrder: SortOrderType
+        sortBy: JobSortByEnum, 
+        sortOrder: SortOrderEnum
     ): Promise<JobEntity[]>
 
     getStatsStatus(

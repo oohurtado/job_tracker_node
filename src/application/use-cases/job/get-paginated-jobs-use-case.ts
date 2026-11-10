@@ -1,14 +1,14 @@
+import { JobSortByEnum } from "../../../domain/enums/job-sort-by-enum";
+import { SortOrderEnum } from "../../../domain/enums/sort-order-enum";
 import { JobEntity } from "../../../domain/models/entities/job-entity";
 import { JobRepository } from "../../../domain/repositories/job-repository";
-import { JobSortByType } from "../../../domain/types/job-sort-by-type";
-import { SortOrderType } from "../../../domain/types/sort-order-type";
 
 interface GetPaginatedJobsInput {
     userId: number, 
     pageNumber: number, 
     pageSize: number, 
-    sortBy: JobSortByType, 
-    sortOrder: SortOrderType
+    sortBy: JobSortByEnum, 
+    sortOrder: SortOrderEnum
 }
 
 export class GetPaginatedJobsUseCase {
