@@ -1,9 +1,11 @@
 import { prisma } from "../../_lib/prisma";
 import { JobEntity } from "../../domain/models/entities/job-entity";
-import { JobStatsReadModel } from "../../domain/models/read-models/job/job-stats-read-model";
+import { JobStatsWorkModelReadModel } from "../../domain/models/read-models/job/job-stats-work-model-read-model";
+import { JobStatsStatusReadModel } from "../../domain/models/read-models/job/job-stats-status-read-model";
 import { JobRepository } from "../../domain/repositories/job-repository";
 import { JobSortByType } from "../../domain/types/job-sort-by-type";
 import { SortOrderType } from "../../domain/types/sort-order-type";
+import { JobStatusEnum } from "../../domain/enums/job-status-enum";
 
 export class JobRepositoryImpl implements JobRepository {
 
@@ -15,12 +17,17 @@ export class JobRepositoryImpl implements JobRepository {
             workModel?: string; 
             sourceDetail?: string; 
             sourceType?: string; 
-            notes?: string; 
             salaryMin: number; 
             salaryMax?: number; 
             salaryCurrency?: string; 
-            salaryPeriod?: string; }
-        ): Promise<JobEntity> {
+            salaryPeriod?: string; 
+            notes?: string; 
+        },
+        jobEvent: {
+            eventAt: Date;
+            status: JobStatusEnum; 
+            notes?: string; 
+        }): Promise<JobEntity> {
 
         let result = await prisma.job.create({
             data: {
@@ -35,6 +42,13 @@ export class JobRepositoryImpl implements JobRepository {
                 source_detail: job.sourceDetail ?? null,
                 source_type: job.sourceType ?? null,
                 work_model: job.workModel ?? null,
+                job_events: {
+                    create: {
+                        event_at: jobEvent.eventAt,
+                        status: jobEvent.status,
+                        notes: jobEvent.notes ?? null,                        
+                    }
+                }
             }       
         })
 
@@ -158,12 +172,86 @@ export class JobRepositoryImpl implements JobRepository {
         return true
     }
 
-    getPaginated(userId: number, pageNumber: number, pageSize: number, sortBy: JobSortByType, sortOrder: SortOrderType): Promise<JobEntity[]> {
-        throw new Error("Method not implemented.");
+    async getPaginated(userId: number, pageNumber: number, pageSize: number, sortBy: JobSortByType, sortOrder: SortOrderType): Promise<JobEntity[]> {
+        const skipRows = (pageNumber - 1) * pageSize;
+
+        const sections = await prisma.job.findMany({
+            where: {
+                user_id: userId
+            },
+            skip: skipRows,
+            take: pageSize,
+            orderBy: {                
+                [sortBy]: sortOrder
+            }
+        });
+
+        return sections.map(j =>
+            new JobEntity(
+                j.id,
+                j.company_name,
+                j.position_name,
+                j.work_model,
+                j.source_detail,
+                j.source_type,
+                j.notes,
+                Number(j.salary_min),
+                Number(j.salary_max),
+                j.salary_currency,
+                j.salary_period,
+                j.user_id)
+        );        
     }
 
-    getStats(userId: number): Promise<JobStatsReadModel> {
-        throw new Error("Method not implemented.");
+    async getStatsStatus(userId: number): Promise<JobStatsStatusReadModel> {
+        const jobs = await prisma.job.findMany({
+            where: {
+                user_id: userId
+            },
+            select: {
+                job_events: {
+                    orderBy: [
+                        { created_at: "desc" },
+                        { id: "desc" }
+                    ],
+                    take: 1,
+                    select: {
+                        status: true
+                    }
+                }
+            }
+        });
+        
+        const stats = jobs.reduce((result, job) => {
+            const status = job.job_events[0]?.status;
+            
+            if (!status) 
+                return result;
+
+            result[status] = (result[status] ?? 0) + 1;
+
+            return result;
+        }, {} as Record<string, number>);   
+
+        return new JobStatsStatusReadModel(stats)
     }
 
+    async getStatsWorkModel(userId: number): Promise<JobStatsWorkModelReadModel> {
+        let result = await prisma.job.groupBy({
+            by: "work_model",
+            where: {
+                user_id: userId
+            },
+            _count: {
+                _all: true
+            }
+        })
+
+        const stats: Record<string, number> = result.reduce((acc, item) => {
+            acc[item.work_model ?? "unknown"] = item._count._all;
+            return acc;
+        }, {} as Record<string, number>);
+
+        return new JobStatsWorkModelReadModel(stats)
+    }
 }

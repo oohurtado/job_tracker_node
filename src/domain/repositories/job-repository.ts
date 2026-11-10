@@ -1,56 +1,32 @@
 
-/*
-- create
-- update
-- delete
-- get-one
-- get-paginated (busqueda, ordenado por fecha)
-- get-stats (agrupar por status, contar)
-*/
-
+import { JobStatusEnum } from "../enums/job-status-enum";
 import { JobEntity } from "../models/entities/job-entity";
-import { JobStatsReadModel } from "../models/read-models/job/job-stats-read-model";
+import { JobStatsStatusReadModel } from "../models/read-models/job/job-stats-status-read-model";
+import { JobStatsWorkModelReadModel } from "../models/read-models/job/job-stats-work-model-read-model";
 import { JobSortByType } from "../types/job-sort-by-type";
 import { SortOrderType } from "../types/sort-order-type";
-
-/*
-model Job {
-  id Int @id @default(autoincrement())
-
-  company_name                    String @db.VarChar(100)
-  position_name                   String? @db.VarChar(100)
-  work_model                      String? @db.VarChar(10)
-  source_detail                   String?
-  source_type                     String? @db.VarChar(50)
-  notes                           String?
-  salary_min                      Decimal? @db.Decimal(12, 2)
-  salary_max                      Decimal? @db.Decimal(12, 2)
-  salary_currency                 String? @db.VarChar(10)
-  salary_period                   String? @db.VarChar(10)
-
-  user_id                         Int
-  user                            User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  job_events                      JobEvent[]
-}
-*/
 
 export interface JobRepository {
 
     create(
         userId: number, 
         job: { 
-            companyName: string, 
-            positionName?: string 
-            workModel?: string,
-            sourceDetail?: string,
-            sourceType?: string,
-            notes?: string,
-            salaryMin: number,
-            salaryMax?: number,
-            salaryCurrency?: string,
-            salaryPeriod?: string
-        }
-    ) : Promise<JobEntity>
+            companyName: string; 
+            positionName?: string; 
+            workModel?: string; 
+            sourceDetail?: string; 
+            sourceType?: string; 
+            salaryMin: number; 
+            salaryMax?: number; 
+            salaryCurrency?: string; 
+            salaryPeriod?: string; 
+            notes?: string; 
+        },
+        jobEvent: {
+            eventAt: Date;
+            status: JobStatusEnum; 
+            notes?: string; 
+        }) : Promise<JobEntity>
 
     getById(
         userId: number, 
@@ -70,9 +46,8 @@ export interface JobRepository {
             salaryMin?: number,
             salaryMax?: number,
             salaryCurrency?: string,
-            salaryPeriod?: string
-        }
-    ) : Promise<JobEntity>
+            salaryPeriod?: string 
+        }) : Promise<JobEntity>
 
     delete(
         userId: number, 
@@ -87,8 +62,12 @@ export interface JobRepository {
         sortOrder: SortOrderType
     ): Promise<JobEntity[]>
 
-    getStats(
+    getStatsStatus(
         userId: number
-    ) : Promise<JobStatsReadModel>
+    ) : Promise<JobStatsStatusReadModel>
+
+    getStatsWorkModel(
+        userId: number
+    ) : Promise<JobStatsWorkModelReadModel>
 
 }
