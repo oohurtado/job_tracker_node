@@ -13,20 +13,20 @@ export class JobRepositoryImpl implements JobRepository {
         userId: number, 
         job: { 
             companyName: string; 
-            positionName?: string; 
-            workModel?: string; 
-            sourceDetail?: string; 
-            sourceType?: string; 
-            salaryMin: number; 
-            salaryMax?: number; 
-            salaryCurrency?: string; 
-            salaryPeriod?: string; 
-            notes?: string; 
+            positionName?: string | null; 
+            workModel?: string | null; 
+            sourceDetail?: string | null; 
+            sourceType?: string | null; 
+            salaryMin?: number | null; 
+            salaryMax?: number | null ; 
+            salaryCurrency?: string | null; 
+            salaryPeriod?: string | null; 
+            notes?: string | null; 
         },
         jobEvent: {
-            eventAt: Date;
             status: JobStatusEnum; 
-            notes?: string; 
+            eventAt?: Date | null;
+            notes?: string | null; 
         }): Promise<JobEntity> {
 
         let result = await prisma.job.create({
@@ -34,19 +34,19 @@ export class JobRepositoryImpl implements JobRepository {
                 user_id: userId,
                 company_name: job.companyName,
                 position_name: job.positionName ?? null,
-                notes: job.notes ?? null,
-                salary_currency: job.salaryCurrency ?? null,
-                salary_min: job.salaryMin,
-                salary_max: job.salaryMax ?? null,
-                salary_period: job.salaryPeriod ?? null,
+                work_model: job.workModel ?? null,
                 source_detail: job.sourceDetail ?? null,
                 source_type: job.sourceType ?? null,
-                work_model: job.workModel ?? null,
+                notes: job.notes ?? null,
+                salary_min: job.salaryMin ?? null,
+                salary_max: job.salaryMax ?? null,
+                salary_currency: job.salaryCurrency ?? null,
+                salary_period: job.salaryPeriod ?? null,
                 job_events: {
                     create: {
-                        event_at: jobEvent.eventAt,
                         status: jobEvent.status,
-                        notes: jobEvent.notes ?? null,                        
+                        notes: jobEvent.notes ?? null,
+                        event_at: jobEvent.eventAt ?? null
                     }
                 }
             }       
@@ -113,15 +113,15 @@ export class JobRepositoryImpl implements JobRepository {
         id: number, 
         job: { 
             companyName: string; 
-            positionName?: string; 
-            workModel?: string; 
-            sourceDetail?: string; 
-            sourceType?: string; 
-            notes?: string; 
-            salaryMin?: number; 
-            salaryMax?: number; 
-            salaryCurrency?: string; 
-            salaryPeriod?: string; 
+            positionName?: string | null; 
+            workModel?: string | null; 
+            sourceDetail?: string | null; 
+            sourceType?: string | null; 
+            salaryMin?: number | null; 
+            salaryMax?: number | null ; 
+            salaryCurrency?: string | null; 
+            salaryPeriod?: string | null; 
+            notes?: string | null; 
         }): Promise<JobEntity> {
 
         let result = await prisma.job.update({

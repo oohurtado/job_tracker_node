@@ -5,18 +5,18 @@ import { NotFoundError } from "../../errors/not-found-error"
 interface UpdateJobInput {
     userId: number, 
     id: number,
-    job: { 
-        companyName: string, 
-        positionName?: string 
-        workModel?: string,
-        sourceDetail?: string,
-        sourceType?: string,
-        notes?: string,
-        salaryMin?: number,
-        salaryMax?: number,
-        salaryCurrency?: string,
-        salaryPeriod?: string 
-    }    
+    job: {
+        companyName: string;
+        positionName?: string | null;
+        workModel?: string | null;
+        sourceDetail?: string | null;
+        sourceType?: string | null;
+        salaryMin?: number | null;
+        salaryMax?: number | null;
+        salaryCurrency?: string | null;
+        salaryPeriod?: string | null;
+        notes?: string | null;
+    }   
 }
 
 export class UpdateJobUseCase {

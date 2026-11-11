@@ -9,24 +9,24 @@ import { JobStatsWorkModelReadModel } from "../models/read-models/job/job-stats-
 export interface JobRepository {
 
     create(
-        userId: number, 
-        job: { 
-            companyName: string; 
-            positionName?: string; 
-            workModel?: string; 
-            sourceDetail?: string; 
-            sourceType?: string; 
-            salaryMin: number; 
-            salaryMax?: number; 
-            salaryCurrency?: string; 
-            salaryPeriod?: string; 
-            notes?: string; 
+        userId: number,
+        job: {
+            companyName: string;
+            positionName?: string | null;
+            workModel?: string | null;
+            sourceDetail?: string | null;
+            sourceType?: string | null;
+            salaryMin?: number | null;
+            salaryMax?: number | null;
+            salaryCurrency?: string | null;
+            salaryPeriod?: string | null;
+            notes?: string | null;
         },
         jobEvent: {
-            eventAt: Date;
-            status: JobStatusEnum; 
-            notes?: string; 
-        }) : Promise<JobEntity>
+            status: JobStatusEnum;
+            eventAt?: Date | null;
+            notes?: string | null;
+        }): Promise<JobEntity>
 
     getById(
         userId: number, 
@@ -36,17 +36,17 @@ export interface JobRepository {
     update(
         userId: number, 
         id: number,
-        job: { 
-            companyName: string, 
-            positionName?: string 
-            workModel?: string,
-            sourceDetail?: string,
-            sourceType?: string,
-            notes?: string,
-            salaryMin?: number,
-            salaryMax?: number,
-            salaryCurrency?: string,
-            salaryPeriod?: string 
+        job: {
+            companyName: string;
+            positionName?: string | null;
+            workModel?: string | null;
+            sourceDetail?: string | null;
+            sourceType?: string | null;
+            salaryMin?: number | null;
+            salaryMax?: number | null;
+            salaryCurrency?: string | null;
+            salaryPeriod?: string | null;
+            notes?: string | null;
         }) : Promise<JobEntity>
 
     delete(

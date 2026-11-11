@@ -4,23 +4,23 @@ import { JobRepository } from "../../../domain/repositories/job-repository";
 
 interface CreateJobInput {
     userId: number, 
-    job: { 
-        companyName: string; 
-        positionName?: string; 
-        workModel?: string; 
-        sourceDetail?: string; 
-        sourceType?: string; 
-        salaryMin: number; 
-        salaryMax?: number; 
-        salaryCurrency?: string; 
-        salaryPeriod?: string; 
-        notes?: string; 
+    job: {
+        companyName: string;
+        positionName?: string | null;
+        workModel?: string | null;
+        sourceDetail?: string | null;
+        sourceType?: string | null;
+        salaryMin?: number | null;
+        salaryMax?: number | null;
+        salaryCurrency?: string | null;
+        salaryPeriod?: string | null;
+        notes?: string | null;
     },
     jobEvent: {
-        eventAt: Date;
-        status: JobStatusEnum; 
-        notes?: string; 
-    }    
+        status: JobStatusEnum;
+        eventAt?: Date | null;
+        notes?: string | null;
+    }   
 }
 
 export class CreateJobUseCase {

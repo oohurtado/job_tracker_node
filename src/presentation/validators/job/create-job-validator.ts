@@ -29,7 +29,7 @@ export const createJobSchema = z.object({
 
         salaryPeriod: z.string().optional(),
 
-        notes: z.string().optional()
+        notes: z.string().nullable().optional()
     }),
 
     jobEvent: z.object({
