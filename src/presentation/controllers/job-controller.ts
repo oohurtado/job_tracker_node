@@ -9,6 +9,7 @@ import { UpdateJobUseCase } from "../../application/use-cases/job/update-job-use
 import { createJobSchema } from "../validators/job/create-job-validator";
 import { idSchema } from "../validators/id-schema";
 import { updateJobSchema } from "../validators/job/update-job-validator";
+import { getPaginatedJobsSchema } from "../validators/job/get-paginated-job-validator";
 
 export class JobController {
 
@@ -88,4 +89,73 @@ export class JobController {
         }
         
     }       
+
+    async deleteJob(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            let userId = idSchema.parse(req.user!.id);
+            let id = idSchema.parse(req.params.id);
+            let result = await this.deleteJobUseCase.execute({
+                userId: userId,
+                id: id
+            });
+            res.status(200).json({ result });
+        } catch (error) {
+            next(error);
+        }
+    }      
+    
+    async getJob(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            let userId = idSchema.parse(req.user!.id);
+            let id = idSchema.parse(req.params.id);
+            const result = await this.getJobUseCase.execute({ 
+                userId: userId,
+                id: id
+            });
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }   
+    
+    async getPaginatedJob(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            let userId = idSchema.parse(req.user!.id);
+            const body = getPaginatedJobsSchema.parse(req.body);
+            const result = await this.getPaginatedJobsUseCase.execute({ 
+                userId: userId,
+                pageNumber: body.pageNumber,
+                pageSize: body.pageSize,
+                sortBy: body.sortBy,
+                sortOrder: body.sortOrder
+            });
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }      
+
+    async getStatsJobStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            let userId = idSchema.parse(req.user!.id);
+            const result = await this.getStatsJobStatusUseCase.execute({ 
+                userId: userId,                
+            });
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }  
+
+    async getStatsJobWorkModel(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            let userId = idSchema.parse(req.user!.id);
+            const result = await this.getStatsJobWorkModelUseCase.execute({ 
+                userId: userId,                
+            });
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }  
 }
