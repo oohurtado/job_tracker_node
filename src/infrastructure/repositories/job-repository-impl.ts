@@ -6,6 +6,7 @@ import { JobRepository } from "../../domain/repositories/job-repository";
 import { JobStatusEnum } from "../../domain/enums/job-status-enum";
 import { JobSortByEnum } from "../../domain/enums/job-sort-by-enum";
 import { SortOrderEnum } from "../../domain/enums/sort-order-enum";
+import { NotFoundError } from "../../application/errors/not-found-error";
 
 export class JobRepositoryImpl implements JobRepository {
 
@@ -90,7 +91,7 @@ export class JobRepositoryImpl implements JobRepository {
         })
 
         if (result === null) {
-            throw new Error("No se encontró el id");
+            throw new NotFoundError("No se encontró el id");
         }
 
         return new JobEntity(
