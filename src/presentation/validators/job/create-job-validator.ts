@@ -1,6 +1,9 @@
 
 import { z } from "zod";
-import { JobStatusEnum } from "../../../domain/enums/job-status-enum";
+import { JobStatusCreateEnum, JobStatusEnum } from "../../../domain/enums/job-status-enum";
+import { WorkModelEnum } from "../../../domain/enums/work-model-enum";
+import { SalaryPeriodEnum } from "../../../domain/enums/salary-period-enum";
+import { SalaryCurrencyEnum } from "../../../domain/enums/salary-currency.enum";
 
 export const createJobSchema = z.object({
     job: z.object({
@@ -12,7 +15,7 @@ export const createJobSchema = z.object({
             .max(100, "El nombre del puesto no puede superar los 100 caracteres")
             .optional(),
 
-        workModel: z.string().optional(),
+        workModel: z.enum(WorkModelEnum).optional(),
 
         sourceDetail: z.string().optional(),
 
@@ -25,9 +28,9 @@ export const createJobSchema = z.object({
             .min(0, "El salario máximo no puede ser negativo")
             .optional(),
 
-        salaryCurrency: z.string().optional(),
+        salaryCurrency: z.enum(SalaryCurrencyEnum).optional(),
 
-        salaryPeriod: z.string().optional(),
+        salaryPeriod: z.enum(SalaryPeriodEnum).optional(),
 
         notes: z.string().nullable().optional()
     }),
@@ -37,7 +40,7 @@ export const createJobSchema = z.object({
             error: "La fecha del evento no es válida"
         }),
 
-        status: z.enum(JobStatusEnum),
+        status: z.enum(JobStatusCreateEnum),
 
         notes: z.string().optional()
     })

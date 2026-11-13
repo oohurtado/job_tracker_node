@@ -1,4 +1,4 @@
-import { JobStatusEnum } from "../../../domain/enums/job-status-enum";
+import { JobStatusCreateEnum, JobStatusEnum } from "../../../domain/enums/job-status-enum";
 import { JobEntity } from "../../../domain/models/entities/job-entity";
 import { JobRepository } from "../../../domain/repositories/job-repository";
 
@@ -17,7 +17,7 @@ interface CreateJobInput {
         notes?: string | null;
     },
     jobEvent: {
-        status: JobStatusEnum;
+        status: JobStatusEnum | JobStatusCreateEnum;
         eventAt?: Date | null;
         notes?: string | null;
     }   
@@ -31,16 +31,6 @@ export class CreateJobUseCase {
     }
 
     async execute(input: CreateJobInput) : Promise<JobEntity> {
-        let allowedStatus = [
-            JobStatusEnum.APPLIED, 
-            JobStatusEnum.CONTACTED, 
-            JobStatusEnum.SAVED
-        ]
-
-        if (!allowedStatus.includes(input.jobEvent.status)) {
-            throw Error("Estatus incorrecto")
-        }
-
         let result = await this.jobRepository.create(
             input.userId, 
             input.job, 

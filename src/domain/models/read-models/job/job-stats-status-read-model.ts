@@ -1,6 +1,6 @@
 export class JobStatsStatusReadModel {
     constructor(
-        data: Record<string, number>
+        public data: Record<string, number>
     ) {
     }
 }

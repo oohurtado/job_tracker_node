@@ -13,7 +13,7 @@ export class GetStatsJobWorkModelUseCase {
     }
 
     async execute(input: GetStatsJobWorkModelInput) : Promise<JobStatsWorkModelReadModel> {
-        let result = this.jobRepository.getStatsWorkModel(input.userId)
+        let result = await this.jobRepository.getStatsWorkModel(input.userId)
         return result
     }
 }

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Job" ALTER COLUMN "salary_currency" SET DATA TYPE VARCHAR(25),
+ALTER COLUMN "salary_period" SET DATA TYPE VARCHAR(25);

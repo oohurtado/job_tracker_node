@@ -222,7 +222,7 @@ export class JobRepositoryImpl implements JobRepository {
                 }
             }
         });
-        
+
         const stats = jobs.reduce((result, job) => {
             const status = job.job_events[0]?.status;
             

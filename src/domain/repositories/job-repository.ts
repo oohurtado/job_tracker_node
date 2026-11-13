@@ -1,6 +1,6 @@
 
 import { JobSortByEnum } from "../enums/job-sort-by-enum";
-import { JobStatusEnum } from "../enums/job-status-enum";
+import { JobStatusCreateEnum, JobStatusEnum } from "../enums/job-status-enum";
 import { SortOrderEnum } from "../enums/sort-order-enum";
 import { JobEntity } from "../models/entities/job-entity";
 import { JobStatsStatusReadModel } from "../models/read-models/job/job-stats-status-read-model";
@@ -23,7 +23,7 @@ export interface JobRepository {
             notes?: string | null;
         },
         jobEvent: {
-            status: JobStatusEnum;
+            status: JobStatusEnum | JobStatusCreateEnum;
             eventAt?: Date | null;
             notes?: string | null;
         }): Promise<JobEntity>

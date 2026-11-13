@@ -12,3 +12,9 @@ export enum JobStatusEnum {
     NO_RESPONSE = "no_response",     // No se recibió respuesta de la empresa después de aplicar.
     CLOSED = "closed"                // El proceso de selección terminó o la vacante fue cerrada.
 }
+
+export enum JobStatusCreateEnum {
+    SAVED = "saved",                 // Vacante guardada para aplicar posteriormente.
+    APPLIED = "applied",             // Solicitud enviada a la empresa.
+    CONTACTED = "contacted",         // La empresa se puso en contacto con el candidato.
+}

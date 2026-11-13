@@ -13,11 +13,33 @@ export function errorHandler(
     next: NextFunction
 ): void {
 
+    /*
     logger.error("Error procesando la solicitud", {
         message: error instanceof Error ? error.message : "Error desconocido",
         path: req.path,
         method: req.method
     });    
+    */
+    const errorDetails = error instanceof Error
+        ? {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+            cause: error.cause
+        }
+        : {
+            name: "UnknownError",
+            message: typeof error === "string"
+                ? error
+                : JSON.stringify(error) ?? String(error),
+            originalError: error
+        };
+
+    logger.error("Error procesando la solicitud", {
+        ...errorDetails,
+        path: req.path,
+        method: req.method
+    });   
 
     if (res.headersSent) {
         next(error);

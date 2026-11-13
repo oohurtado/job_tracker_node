@@ -65,14 +65,14 @@ model Job {
 
   company_name                    String @db.VarChar(100)
   position_name                   String? @db.VarChar(100)
-  work_model                      String? @db.VarChar(10)
+  work_model                      String? @db.VarChar(25)
   source_detail                   String?
   source_type                     String? @db.VarChar(50)
   notes                           String?
   salary_min                      Decimal? @db.Decimal(12, 2)
   salary_max                      Decimal? @db.Decimal(12, 2)
-  salary_currency                 String? @db.VarChar(10)
-  salary_period                   String? @db.VarChar(10)
+  salary_currency                 String? @db.VarChar(25)
+  salary_period                   String? @db.VarChar(25)
 
   user_id                         Int
   user                            User @relation(fields: [user_id], references: [id], onDelete: Cascade)

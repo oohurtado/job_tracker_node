@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Job" ALTER COLUMN "work_model" SET DATA TYPE VARCHAR(25);
