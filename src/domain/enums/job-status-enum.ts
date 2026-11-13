@@ -1,14 +1,14 @@
 export enum JobStatusEnum {
-    SAVED = "saved",
-    APPLIED = "applied",
-    IN_REVIEW = "in_review",
-    CONTACTED = "contacted",
-    INTERVIEWING = "interviewing",
-    ASSESSMENT = "assessment",
-    OFFER = "offer",
-    ACCEPTED = "accepted",
-    REJECTED = "rejected",
-    DECLINED = "declined",
-    NO_RESPONSE = "no_response",
-    CLOSED = "closed"
+    SAVED = "saved",                 // Vacante guardada para aplicar posteriormente.
+    APPLIED = "applied",             // Solicitud enviada a la empresa.
+    IN_REVIEW = "in_review",         // La empresa está revisando la solicitud.
+    CONTACTED = "contacted",         // La empresa se puso en contacto con el candidato.
+    INTERVIEWING = "interviewing",   // El candidato está participando en entrevistas.
+    ASSESSMENT = "assessment",       // El candidato está realizando una prueba técnica, evaluación o examen.
+    OFFER = "offer",                 // La empresa realizó una oferta laboral.
+    ACCEPTED = "accepted",           // El candidato aceptó la oferta laboral.
+    REJECTED = "rejected",           // La empresa rechazó al candidato.
+    DECLINED = "declined",           // El candidato rechazó la oferta laboral.
+    NO_RESPONSE = "no_response",     // No se recibió respuesta de la empresa después de aplicar.
+    CLOSED = "closed"                // El proceso de selección terminó o la vacante fue cerrada.
 }

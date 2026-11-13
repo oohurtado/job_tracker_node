@@ -42,10 +42,10 @@ interview_questions
 /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 
 Módulo                                          | Días estimados
-Users (6 casos)	                                        2–3             5,6,7           YA
-Personal Information (3 casos)	                        1               8               YA
-Jobs (6 casos)	                                        2–3             9,10
-Job Events (5 casos)	                                1–2             11,12
-Interview Questions (5 casos)	                        1–2             13,14
-Pruebas e integración	                                2               15,16
+Users (6 casos)	                                        2–3             7,8,9           YA
+Personal Information (3 casos)	                        1               10              YA
+Jobs (6 casos)	                                        2–3             11,12           YA
+Job Events (5 casos)	                                1–2             13,14
+Interview Questions (5 casos)	                        1–2             15,16
+Pruebas e integración	                                2               17,18
 Total	                                                9–13 días

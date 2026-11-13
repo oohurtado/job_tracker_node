@@ -10,6 +10,8 @@ import { createJobSchema } from "../validators/job/create-job-validator";
 import { idSchema } from "../validators/id-schema";
 import { updateJobSchema } from "../validators/job/update-job-validator";
 import { getPaginatedJobsSchema } from "../validators/job/get-paginated-job-validator";
+import { JobSortByEnum } from "../../domain/enums/job-sort-by-enum";
+import { SortOrderEnum } from "../../domain/enums/sort-order-enum";
 
 export class JobController {
 
@@ -121,13 +123,17 @@ export class JobController {
     async getPaginatedJob(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             let userId = idSchema.parse(req.user!.id);
-            const body = getPaginatedJobsSchema.parse(req.body);
+            let pageNumber = Number(req.params.pageNumber)
+            let pageSize = Number(req.params.pageSize)
+            let sortBy = req.params.sortBy as JobSortByEnum
+            let sortOrder = req.params.sortOrder as SortOrderEnum
+
             const result = await this.getPaginatedJobsUseCase.execute({ 
                 userId: userId,
-                pageNumber: body.pageNumber,
-                pageSize: body.pageSize,
-                sortBy: body.sortBy,
-                sortOrder: body.sortOrder
+                pageNumber: pageNumber,
+                pageSize: pageSize,
+                sortBy: sortBy,
+                sortOrder: sortOrder
             });
             res.status(200).json(result);
         } catch (error) {

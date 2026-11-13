@@ -31,7 +31,22 @@ export class CreateJobUseCase {
     }
 
     async execute(input: CreateJobInput) : Promise<JobEntity> {
-        let result = await this.jobRepository.create(input.userId, input.job, input.jobEvent)
+        let allowedStatus = [
+            JobStatusEnum.APPLIED, 
+            JobStatusEnum.CONTACTED, 
+            JobStatusEnum.SAVED
+        ]
+
+        if (!allowedStatus.includes(input.jobEvent.status)) {
+            throw Error("Estatus incorrecto")
+        }
+
+        let result = await this.jobRepository.create(
+            input.userId, 
+            input.job, 
+            input.jobEvent
+        )
+        
         return result
     }
 }
