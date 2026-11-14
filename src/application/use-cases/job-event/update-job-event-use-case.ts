@@ -1,10 +1,14 @@
+import { JobEventRepository } from "../../../domain/repositories/job-event-repository";
+
 interface UpdateJobEventInput {
 
 }
 
 export class UpdateJobEventUseCase {
 
-    constructor() {        
+    constructor(
+        private readonly jobEventRepository: JobEventRepository
+    ) {        
     }
     
 }
