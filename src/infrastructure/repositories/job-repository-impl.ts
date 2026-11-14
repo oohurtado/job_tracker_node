@@ -82,7 +82,7 @@ export class JobRepositoryImpl implements JobRepository {
             result.user_id)        
     }
     
-    async getById(userId: number, id: number): Promise<JobEntity> {
+    async getById(userId: number, id: number): Promise<JobEntity | null> {
         let result = await prisma.job.findFirst({
             where: {
                 user_id: userId,
@@ -105,7 +105,7 @@ export class JobRepositoryImpl implements JobRepository {
         })
 
         if (result === null) {
-            throw new NotFoundError("No se encontró el id");
+            return null
         }
 
         return new JobEntity(

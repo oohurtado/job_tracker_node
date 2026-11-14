@@ -41,7 +41,7 @@ export class UserRepositoryImpl implements UserRepository {
         })
 
         if (result === null) {
-            throw new Error("No se encontró el correo electrónico");
+            return null
         }
 
         return new UserEntity(
@@ -69,7 +69,7 @@ export class UserRepositoryImpl implements UserRepository {
         })
 
         if (result === null) {
-            throw new Error("No se encontró el correo electrónico");
+            return null
         }
 
         return new UserEntity(

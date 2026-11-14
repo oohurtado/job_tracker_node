@@ -23,6 +23,7 @@ export class CreateJobEventUseCase {
 
     async execute(input: CreateJobEventInput) : Promise<JobEventEntity> {    
         let owned = await this.jobRepository.isOwnedByUser(input.userId, input.jobId)
+        
         if (!owned) {
             throw new Error("El job no le pertenece al user")
         }

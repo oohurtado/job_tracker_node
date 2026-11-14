@@ -25,7 +25,7 @@ export interface JobEventRepository {
         userId: number, 
         jobId: number,
         id: number,
-    ) : Promise<JobEventEntity>   
+    ) : Promise<JobEventEntity | null>   
 
     getAll(
         userId: number, 

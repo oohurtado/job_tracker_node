@@ -1,5 +1,6 @@
 import { UserEntity } from "../../../domain/models/entities/user-entity";
 import { UserRepository } from "../../../domain/repositories/user-repository";
+import { NotFoundError } from "../../errors/not-found-error";
 
 interface GetMeInput {
     userId: number;
@@ -16,8 +17,9 @@ export class GetMeUseCase {
 
     async execute(input: GetMeInput) : Promise<GetMeOutput> {
         let result = await this.userRepository.getById(input.userId)
-        if (!result) {
-            throw new Error("Usuario no encontrado");
+        
+        if (result === null) {
+            throw new NotFoundError("No se encontró el userId");   
         }   
 
         const {

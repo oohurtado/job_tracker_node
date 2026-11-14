@@ -33,7 +33,7 @@ export interface JobRepository {
     getById(
         userId: number, 
         id: number,
-    ) : Promise<JobEntity>    
+    ) : Promise<JobEntity | null>    
 
     update(
         userId: number, 

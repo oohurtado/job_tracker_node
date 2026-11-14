@@ -1,5 +1,6 @@
 import { UserRepository } from "../../../domain/repositories/user-repository";
 import { PasswordService } from "../../../domain/services/password-service";
+import { NotFoundError } from "../../errors/not-found-error";
 
 interface ChangePasswordInput {
     userId: number;
@@ -17,8 +18,8 @@ export class ChangePasswordUseCase {
     async execute(input: ChangePasswordInput): Promise<void> {
         let result = await this.userRepository.getById(input.userId)
         
-        if (!result) {
-            throw new Error("No se encontró el userId");
+        if (result === null) {
+            throw new NotFoundError("No se encontró el userId");            
         }
 
         let isValid = await this.passwordService.compare(input.oldPassword, result.password ?? "")

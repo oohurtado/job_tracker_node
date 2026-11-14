@@ -1,6 +1,7 @@
 import { generateCode } from "../../../_shared/services/code-service";
 import { EmailService } from "../../../_shared/services/email-service";
 import { UserRepository } from "../../../domain/repositories/user-repository";
+import { NotFoundError } from "../../errors/not-found-error";
 
 interface ForgotPasswordStep1Input {
     email: string;
@@ -17,8 +18,8 @@ export class ForgotPasswordStep1UseCase {
         // 1 - obtener el usuario por correo electrónico
         let user = await this.userRepository.getByEmail(input.email);
 
-        if (!user) {
-            throw new Error("No se encontró el correo electrónico");
+        if (user === null) {
+            throw new NotFoundError("No se encontró el correo electrónico");
         }
 
         // 2 - guardar el código de restablecimiento de contraseña en la base de datos

@@ -33,11 +33,15 @@ import { GetStatsJobStatusUseCase } from './application/use-cases/job/get-stats-
 import { GetStatsJobWorkModelUseCase } from './application/use-cases/job/get-stats-job-work-model-use-case';
 import { UpdateJobUseCase } from './application/use-cases/job/update-job-use-case';
 import { JobController } from './presentation/controllers/job-controller';
+import { CreateJobEventUseCase } from './application/use-cases/job-event/create-job-event-use-case';
+import { JobEventRepository } from './domain/repositories/job-event-repository';
+import { JobEventRepositoryImpl } from './infrastructure/repositories/job-event-repository-impl';
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
 const roleRepository: RoleRepository = new RoleRepositoryImpl()
 const jobRepository: JobRepository = new JobRepositoryImpl()
+const jobEventRepository: JobEventRepository = new JobEventRepositoryImpl()
 
 // servicios
 export const tokenService: TokenService = new TokenServiceImpl()
@@ -74,6 +78,10 @@ const getPaginatedJobsUseCase: GetPaginatedJobsUseCase = new GetPaginatedJobsUse
 const getStatsJobStatusUseCase: GetStatsJobStatusUseCase = new GetStatsJobStatusUseCase(jobRepository)
 const getStatsJobWorkModelUseCase: GetStatsJobWorkModelUseCase = new GetStatsJobWorkModelUseCase(jobRepository)
 const updateJobUseCase: UpdateJobUseCase = new UpdateJobUseCase(jobRepository)
+
+// casos de uso : job event
+const createJobEventUseCase: CreateJobEventUseCase = new CreateJobEventUseCase(jobRepository, jobEventRepository)
+
 
 // controllers : usuarios
 export const userController: UserController = new UserController(

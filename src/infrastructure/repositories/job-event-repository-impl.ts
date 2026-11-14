@@ -4,7 +4,7 @@ import { JobStatusEnum } from "../../domain/enums/job-status-enum";
 import { JobEventEntity } from "../../domain/models/entities/job-event-entity";
 import { JobEventRepository } from "../../domain/repositories/job-event-repository";
 
-export class JobRepositoryImpl implements JobEventRepository {
+export class JobEventRepositoryImpl implements JobEventRepository {
 
     async create(
         jobId: number, 
@@ -61,7 +61,7 @@ export class JobRepositoryImpl implements JobEventRepository {
         )
     }
 
-    async getById(userId: number, jobId: number, id: number): Promise<JobEventEntity> {
+    async getById(userId: number, jobId: number, id: number): Promise<JobEventEntity | null> {
         let result = await prisma.jobEvent.findFirst({
             where: {
                 job_id: jobId,
@@ -80,7 +80,7 @@ export class JobRepositoryImpl implements JobEventRepository {
         })
 
         if (result === null) {
-            throw new NotFoundError("No se encontró el id");
+            return null
         }
         
         return new JobEventEntity(

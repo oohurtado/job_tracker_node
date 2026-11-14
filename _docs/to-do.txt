@@ -1,1 +1,7 @@
-quitar excepciones de repositorios, mejore regresar null y que el use-case decida que hacer con el null
+wip:
+- job event use cases
+
+pendientes:
+- interview questions
+- user avatar
+- user cv

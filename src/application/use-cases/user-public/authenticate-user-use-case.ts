@@ -2,6 +2,7 @@ import { TokenReadModel } from "../../../domain/models/read-models/user/token-re
 import { UserRepository } from "../../../domain/repositories/user-repository"
 import { PasswordService } from "../../../domain/services/password-service"
 import { TokenService } from "../../../domain/services/token-service"
+import { NotFoundError } from "../../errors/not-found-error"
 
 interface AuthenticateUserInput {
     email: string
@@ -20,8 +21,8 @@ export class AuthenticateUserUseCase {
     async execute(input: AuthenticateUserInput) : Promise<TokenReadModel | null> {
         let result = await this.userRepository.getByEmail(input.email)
         
-        if (!result) {
-            return null;
+        if (result === null) {
+            throw new NotFoundError("No se encontró el correo electrónico");
         }
 
         const isValid = await this.passwordService.compare(input.password, result.password ?? "");
