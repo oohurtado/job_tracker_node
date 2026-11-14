@@ -6,20 +6,6 @@ import { JobEventRepository } from "../../domain/repositories/job-event-reposito
 
 export class JobRepositoryImpl implements JobEventRepository {
 
-    async isOwnedByUser(userId: number, jobId: number) : Promise<boolean> {
-        let exists = await prisma.job.findFirst({
-            where: {
-                user_id: userId,
-                id: jobId
-            },
-            select: {
-                id: true
-            }
-        })
-
-        return exists !== null
-    }
-
     async create(
         jobId: number, 
         jobEvent: { 
@@ -34,7 +20,7 @@ export class JobRepositoryImpl implements JobEventRepository {
                 status: jobEvent.status,
                 event_at: jobEvent.eventAt ?? null,                
                 notes: jobEvent.notes ?? null,                
-            }
+            },        
         })
 
         return new JobEventEntity(
@@ -120,6 +106,9 @@ export class JobRepositoryImpl implements JobEventRepository {
                 job_id: true,
                 notes: true,
                 status: true,
+            },
+            orderBy: {
+                event_at: "desc"
             }
         })
         

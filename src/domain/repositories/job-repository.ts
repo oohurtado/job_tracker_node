@@ -8,6 +8,8 @@ import { JobStatsWorkModelReadModel } from "../models/read-models/job/job-stats-
 
 export interface JobRepository {
 
+    isOwnedByUser(userId: number, jobId: number) : Promise<boolean>
+    
     create(
         userId: number,
         job: {

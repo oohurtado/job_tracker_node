@@ -2,9 +2,7 @@ import { JobEvent } from "../../generated/prisma/client";
 import { JobStatusEnum } from "../enums/job-status-enum";
 import { JobEventEntity } from "../models/entities/job-event-entity";
 
-export interface JobEventRepository {
-    
-    isOwnedByUser(userId: number, jobId: number) : Promise<boolean>
+export interface JobEventRepository {        
 
     create(
         jobId: number,

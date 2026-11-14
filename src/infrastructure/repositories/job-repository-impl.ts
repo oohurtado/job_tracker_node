@@ -10,6 +10,20 @@ import { NotFoundError } from "../../application/errors/not-found-error";
 
 export class JobRepositoryImpl implements JobRepository {
 
+     async isOwnedByUser(userId: number, jobId: number) : Promise<boolean> {
+        let exists = await prisma.job.findFirst({
+            where: {
+                user_id: userId,
+                id: jobId
+            },
+            select: {
+                id: true
+            }
+        })
+
+        return exists !== null
+    }
+
     async create(
         userId: number, 
         job: { 
