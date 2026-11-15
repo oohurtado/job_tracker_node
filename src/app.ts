@@ -6,6 +6,7 @@ import userRoutes from "./presentation/routes/user-routes"
 
 import { emailService } from "./container";
 import jobRoutes from "./presentation/routes/job-routes";
+import jobEventRoutes from "./presentation/routes/job-event-routes";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use(userRoutes);
 app.use(jobRoutes);
+app.use(jobEventRoutes);
 
 app.get("/", async (req, res) => {
     res.send({msg: "Hola desde Express"});
