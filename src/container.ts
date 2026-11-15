@@ -36,6 +36,11 @@ import { JobController } from './presentation/controllers/job-controller';
 import { CreateJobEventUseCase } from './application/use-cases/job-event/create-job-event-use-case';
 import { JobEventRepository } from './domain/repositories/job-event-repository';
 import { JobEventRepositoryImpl } from './infrastructure/repositories/job-event-repository-impl';
+import { DeleteJobEventUseCase } from './application/use-cases/job-event/delete-job-event-use-case';
+import { GetAllJobEventsUseCase } from './application/use-cases/job-event/get-all-job-events-use-case';
+import { GetJobEventUseCase } from './application/use-cases/job-event/get-job-event-use-case';
+import { UpdateJobEventUseCase } from './application/use-cases/job-event/update-job-event-use-case';
+import { JobEventController } from './presentation/controllers/job-event-controller';
 
 // repositorios
 const userRepository: UserRepository = new UserRepositoryImpl()
@@ -81,7 +86,10 @@ const updateJobUseCase: UpdateJobUseCase = new UpdateJobUseCase(jobRepository)
 
 // casos de uso : job event
 const createJobEventUseCase: CreateJobEventUseCase = new CreateJobEventUseCase(jobRepository, jobEventRepository)
-
+const deleteJobEventUseCase: DeleteJobEventUseCase = new DeleteJobEventUseCase(jobEventRepository)
+const getJobEventUseCase : GetJobEventUseCase = new GetJobEventUseCase(jobEventRepository)
+const getAllJobEventsUseCase : GetAllJobEventsUseCase = new GetAllJobEventsUseCase(jobEventRepository)
+const updateJobEventUseCase: UpdateJobEventUseCase = new UpdateJobEventUseCase(jobRepository, jobEventRepository)
 
 // controllers : usuarios
 export const userController: UserController = new UserController(
@@ -97,6 +105,7 @@ export const userController: UserController = new UserController(
     deleteUserPersonalInformationUseCase,
 )
 
+// controllers : job
 export const jobController: JobController = new JobController(
     createJobUseCase,
     deleteJobUseCase,
@@ -105,6 +114,15 @@ export const jobController: JobController = new JobController(
     getStatsJobStatusUseCase,
     getStatsJobWorkModelUseCase,
     updateJobUseCase,
+)
+
+// controllers : job event
+export const jobEventController: JobEventController = new JobEventController(
+    createJobEventUseCase,
+    updateJobEventUseCase,
+    deleteJobEventUseCase,
+    getJobEventUseCase,
+    getAllJobEventsUseCase,
 )
 
 export const authorize = (...roles: string[]) => authorizeMiddleware(roleRepository, ...roles);
