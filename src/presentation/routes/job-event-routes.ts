@@ -5,7 +5,7 @@ import { RoleEnum } from "../../domain/enums/role-enum";
 
 const router = Router();
 
-router.post("/job-events", authenticateJwt(tokenService), authorize(RoleEnum.USER), (req, res, next) => {
+router.post("/job-events/:jobId", authenticateJwt(tokenService), authorize(RoleEnum.USER), (req, res, next) => {
     void jobEventController.createJobEvent(req, res, next);
 });
 
